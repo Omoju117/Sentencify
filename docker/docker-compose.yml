@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ${BACKEND_CONTEXT}
+      dockerfile: docker/Dockerfile
+    ports:
+      - 3000:3000
+    command: ["npm", "run", "start"]
+    volumes:
+      - ${BACKEND_CONTEXT}:/app
+    networks:
+      - default
+
+  frontend:
+    build:
+      context: ${FRONTEND_CONTEXT}
+      dockerfile: docker/Dockerfile
+    ports:
+      - 4000:4000
+    command: ["npm", "run", "dev"]
+    volumes:
+      - ${FRONTEND_CONTEXT}:/app
+    networks:
+      - default
