@@ -1,5 +1,4 @@
 import { VFC } from "react";
-import style from "./../styles/Home.module.css";
 import useSWR from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -14,8 +13,10 @@ const Home: VFC<void> = () => {
   console.log("result is", data);
 
   return (
-    <div className={style.container}>
-      <h1>Frontend is successfully displaying!</h1>
+    <div className="flex flex-col my-4 mx-4">
+      <h1 className="font-bold text-[24px] text-blue-600">
+        Frontend is successfully displaying!
+      </h1>
       <span>{data.result}</span>
     </div>
   );
