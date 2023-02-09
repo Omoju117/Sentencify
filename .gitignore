@@ -40,3 +40,6 @@ frontend/.vercel
 
 ## typescript
 frontend/*.tsbuildinfo
+
+# database
+db/data/

@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: ${DB_CONTEXT}
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ${DB_CONTEXT}/initdb.d:/docker-entrypoint-initdb.d # initialize process
+      - ${DB_CONTEXT}/data:/var/lib/mysql # directory to persist data
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypassword
+    ports:
+      - 3306:3306
+    image: "sentence-writer-db"
+    container_name: "sentence-writer-db"
+    networks:
+      - default
+
+networks:
+  shared-network:
+    name: ${DOCKER_NETWORK_NAME}

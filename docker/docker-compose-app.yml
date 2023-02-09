@@ -8,6 +8,8 @@ services:
     ports:
       - 3000:3000
     command: ["npm", "run", "start"]
+    image: "sentence-writer-backend"
+    container_name: "sentence-writer-backend"
     volumes:
       - ${BACKEND_CONTEXT}:/app
     networks:
@@ -20,7 +22,14 @@ services:
     ports:
       - 4000:4000
     command: ["npm", "run", "dev"]
+    image: "sentence-writer-frontend"
+    container_name: "sentence-writer-frontend"
     volumes:
       - ${FRONTEND_CONTEXT}:/app
     networks:
       - default
+
+networks:
+  shared-network:
+    name: ${DOCKER_NETWORK_NAME}
+    external: true
