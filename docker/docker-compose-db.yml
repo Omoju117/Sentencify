@@ -16,6 +16,7 @@ services:
     container_name: "sentence-writer-db"
     networks:
       - default
+      - shared-network
 
 networks:
   shared-network:

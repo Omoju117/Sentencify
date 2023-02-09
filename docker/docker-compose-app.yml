@@ -13,6 +13,7 @@ services:
     volumes:
       - ${BACKEND_CONTEXT}:/app
     networks:
+      - shared-network
       - default
 
   frontend:
@@ -27,6 +28,7 @@ services:
     volumes:
       - ${FRONTEND_CONTEXT}:/app
     networks:
+      - shared-network
       - default
 
 networks:
