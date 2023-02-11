@@ -1,12 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { RecoilRoot } from "recoil";
+import { createContext } from "react";
+
+export const MarkContext = createContext(null);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
+    <MarkContext.Provider value="">
       <Component {...pageProps} />
-    </RecoilRoot>
+    </MarkContext.Provider>
   );
 }
 
