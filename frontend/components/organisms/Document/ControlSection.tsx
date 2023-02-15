@@ -30,7 +30,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
     );
   };
   return (
-    <div className="flex flex-col w-[70%]">
+    <div className="flex flex-col w-[70%] pr-2">
       <div className="flex mb-5">
         <textarea
           className="input-sentence w-full text-[16px] leading-4 p-8 border border-solid border-blue-600 rounded-[4px]"
@@ -54,7 +54,13 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
           <MarkPicker markType={"show"} setMark={setMark} />
           <MarkPicker markType={"note"} setMark={setMark} />
           <button
-            className="bg-gray-200 rounded"
+            className="w-[55%] border rounded"
+            onClick={functions.handleClickSave}
+          >
+            save
+          </button>
+          <button
+            className="w-[7.5%] bg-gray-200 rounded"
             onClick={() => {
               functions.setWordSchemes(() =>
                 states.wordSchemes.map((wordScheme) => ({
@@ -67,7 +73,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             hide
           </button>
           <button
-            className="bg-gray-600 rounded"
+            className="w-[7.5%] bg-gray-600 rounded"
             onClick={() => {
               functions.setWordSchemes(() =>
                 states.wordSchemes.map((wordScheme) => ({
@@ -78,12 +84,6 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             }}
           >
             reset
-          </button>
-          <button
-            className="bg-yellow-600 rounded"
-            onClick={functions.handleClickSave}
-          >
-            save
           </button>
         </div>
       </MarkContext.Provider>

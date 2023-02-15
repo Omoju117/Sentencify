@@ -1,18 +1,25 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { VFC, useState } from "react";
 import { WordScheme } from "../../components/atoms/Word";
 import ControlSection from "../../components/organisms/Document/ControlSection";
 import NoteSection from "../../components/organisms/Document/NoteSection";
 
+type MarkScheme = {
+  index: number;
+  type: string;
+};
+
+// TODO: Add User ID
 type DocumentScheme = {
   id?: number;
   sentence: string;
   translation: string;
-  markedWords: WordScheme[];
+  marks: MarkScheme[];
 };
 
 const Document: VFC<void> = () => {
-  /** 英文 */
+  const router = useRouter();
   const [sentence, setSentence] = useState("");
   /** 訳 */
   const [translation, setTranslation] = useState("");
@@ -20,24 +27,34 @@ const Document: VFC<void> = () => {
   const [wordSchemes, setWordSchemes] = useState<WordScheme[]>([]);
   /** Documentのデータ */
   const documentScheme: DocumentScheme = {
-    id: 1,
+    // TODO: fix it
+    id:
+      typeof router.query.documentId === "string"
+        ? parseInt(router.query.documentId)
+        : 0,
     sentence,
     translation,
-    markedWords: wordSchemes.filter((wordScheme) => wordScheme.mark !== ""),
+    marks: wordSchemes
+      .filter((wordScheme) => wordScheme.mark !== "")
+      .map((wordScheme) => ({
+        index: wordScheme.index,
+        type: wordScheme.mark === "show" ? 1 : 2,
+      })),
   };
 
   const handleClickSave = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    console.log("documentScheme", documentScheme);
     params.append("id", documentScheme.id.toString());
     params.append("sentence", documentScheme.sentence);
     params.append("translation", documentScheme.translation);
-    documentScheme.markedWords.forEach((word) => {
-      params.append("markedWords", JSON.stringify(word));
+    documentScheme.marks.forEach((mark) => {
+      params.append("marks", JSON.stringify(mark));
     });
 
     axios
-      .post("http://localhost:3000/document", params)
+      .put("http://localhost:3000/document", params)
       .then((res) => {
         console.log("res", res.data);
       })

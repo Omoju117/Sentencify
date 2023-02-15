@@ -22,7 +22,7 @@ const MarkPicker: VFC<Props> = ({ markType, setMark }) => {
   return (
     <button
       className={
-        getBgStyle(markType) + " flex w-40 h-20 rounded cursor-pointer"
+        getBgStyle(markType) + " flex w-[15%] h-20 rounded cursor-pointer"
       }
       onClick={() => {
         setMark(markType);
