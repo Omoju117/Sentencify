@@ -37,11 +37,28 @@ app.get("/", (req, res) => {
   res.send({ result: "this message has sent from backend!" });
 });
 
-app.post("/document", (req, res) => {
+const documentService = require("./services/documentService");
+app.get("/documents", async (req, res) => {
+  let params = req.query;
+  console.log(params);
+  const result = await documentService.getDocuments(params.userId);
+  res.send(result);
+});
+
+app.post("/document", async (req, res) => {
   let data = req.body;
   console.log(data);
-  console.log("post has been received");
-  res.send("Data Received: ");
+  const result = await documentService.createDocument(data.userId);
+  console.log("post result", result);
+  res.send(result);
+});
+
+app.put("/document", async (req, res) => {
+  let document = req.body;
+  console.log(document);
+  const result = await documentService.updateDocument(document);
+  console.log("upt result", result);
+  res.send({ message: "Data Received", data: result });
 });
 
 app.listen(PORT, () => console.log(`Server is running :PORT ${PORT}`));
