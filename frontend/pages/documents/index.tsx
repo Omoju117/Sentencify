@@ -2,18 +2,23 @@ import axios from "axios";
 import { VFC } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import DocumentBar, {
+  DocumentListItem,
+} from "../../components/atoms/DocumentBar";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Documents: VFC<void> = () => {
   const router = useRouter();
-  const { data: documents, error } = useSWR(
-    `http://localhost:3000/documents?userId=1`,
+  /** ドキュメントリストの要素 */
+  let documentListItems: DocumentListItem[];
+  const { data, error } = useSWR(
+    `http://localhost:3000/documentListItems?userId=1`,
     fetcher
   );
-  console.log(documents);
+  documentListItems = data;
   if (error) return <div>Failed to load</div>;
-  if (!documents) return <div>Loading...</div>;
+  if (!documentListItems) return <div>Loading...</div>;
 
   /**
    * ドキュメント新規作成ボタンクリック時の処理
@@ -28,17 +33,16 @@ const Documents: VFC<void> = () => {
       .post("http://localhost:3000/document", params)
       .then((res) => {
         console.log("res", res.data);
-        // TODO: fix here to use path parameter
-        console.log("res.data.id", res.data.id);
+        const document = res.data;
         router.push({
-          pathname: "/document",
-          query: { documentId: res.data.id },
+          pathname: `/document/${document.id}`,
         });
       })
       .catch((err) => {
         console.log("error in request", err);
       });
   };
+
   return (
     <div className="flex flex-col w-[100vw] h-[100vh] items-center justify-start py-20">
       <button
@@ -47,14 +51,12 @@ const Documents: VFC<void> = () => {
       >
         <span className="text-[16px] leading-5">Create New Document</span>
       </button>
-      {documents.map((document, i) => {
+      {documentListItems.map((documentListItem) => {
         return (
-          <button
-            key={document.id + i}
-            className="w-[50%] bg-gray-100 py-3 border-l border-b border-r rounded"
-          >
-            {document.sentence}
-          </button>
+          <DocumentBar
+            key={documentListItem.id}
+            documentListItem={documentListItem}
+          />
         );
       })}
     </div>
