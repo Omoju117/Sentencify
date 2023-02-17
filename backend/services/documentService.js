@@ -15,6 +15,26 @@ exports.getDocuments = async (userId) => {
   return result;
 };
 
+exports.getDocument = async (params) => {
+  const result = await executeQueryService.execute(async () => {
+    const document = await prisma.document.findUnique({
+      where: {
+        id: parseInt(params.id),
+      },
+    });
+    console.log("document", document);
+
+    const marks = await prisma.marks.findMany({
+      where: {
+        documentId: parseInt(params.id),
+      },
+    });
+    console.log("marks", marks);
+    return { document, marks };
+  });
+  return result;
+};
+
 exports.createDocument = async (userId) => {
   const result = await executeQueryService.execute(async () => {
     const newDocument = await prisma.document.create({

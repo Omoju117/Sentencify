@@ -38,10 +38,18 @@ app.get("/", (req, res) => {
 });
 
 const documentService = require("./services/documentService");
-app.get("/documents", async (req, res) => {
+app.get("/documentListItems", async (req, res) => {
   let params = req.query;
   console.log(params);
   const result = await documentService.getDocuments(params.userId);
+  res.send(result);
+});
+
+app.get("/document", async (req, res) => {
+  let params = req.query;
+  console.log(params);
+  const result = await documentService.getDocument(params);
+  console.log(result);
   res.send(result);
 });
 
