@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { VFC, useState } from "react";
+import { VFC, useState, useEffect } from "react";
 import { WordScheme } from "../../components/atoms/Word";
 import ControlSection from "../../components/organisms/Document/ControlSection";
 import NoteSection from "../../components/organisms/Document/NoteSection";
@@ -11,7 +11,7 @@ type MarkScheme = {
 };
 
 // TODO: Add User ID
-type DocumentScheme = {
+export type DocumentScheme = {
   id?: number;
   sentence: string;
   translation: string;
@@ -25,7 +25,7 @@ const Document: VFC<void> = () => {
   const [translation, setTranslation] = useState("");
   /** 英文を構成するWordの配列データ */
   const [wordSchemes, setWordSchemes] = useState<WordScheme[]>([]);
-  /** Documentのデータ */
+  /** Documentのデータ TODO: make setDocumentScheme */
   const documentScheme: DocumentScheme = {
     // TODO: fix it
     id:
@@ -41,7 +41,29 @@ const Document: VFC<void> = () => {
         type: wordScheme.mark === "show" ? 1 : 2,
       })),
   };
+  /** 初回表示時にデータ取得処理 */
+  useEffect(() => {
+    if (router.query.isExisting) {
+      axios
+        .get("http://localhost:3000/document", {
+          params: {
+            id: router.query.documentId,
+            userId: "1",
+          },
+        })
+        .then((res) => {
+          console.log("res", res.data);
+        })
+        .catch((err) => {
+          console.log("error in request", err);
+        });
+    }
+  }, [router.query]);
 
+  /**
+   * 保存ボタン押下時処理
+   * @param e イベント
+   */
   const handleClickSave = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
