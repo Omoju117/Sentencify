@@ -1,4 +1,11 @@
-import { VFC, useState, SetStateAction, Dispatch, useContext } from "react";
+import {
+  VFC,
+  useState,
+  SetStateAction,
+  Dispatch,
+  useContext,
+  useEffect,
+} from "react";
 import { MarkContext } from "../../pages/_app";
 
 /** Type of Word */
@@ -13,6 +20,7 @@ type Props = {
   index: number;
   word: string;
   isVisible: boolean;
+  mark: string;
   setWordSchemes: Dispatch<SetStateAction<WordScheme[]>>;
 };
 
@@ -28,20 +36,32 @@ const getBgStyle = (mark: string) => {
   }
 };
 
-const Word: VFC<Props> = ({ index, word, isVisible, setWordSchemes }) => {
+const Word: VFC<Props> = ({ index, word, mark, isVisible, setWordSchemes }) => {
   // コンテキストから値を取得
-  const mark = useContext(MarkContext);
+  const currentPickedMark = useContext(MarkContext);
   const [bgColor, setBgColor] = useState("bg-gray-100");
+
+  /** 初回レンダリング時処理 */
+  useEffect(() => {
+    setBgColor(getBgStyle(mark));
+  }, [mark]);
+
+  /** Wordクリック時処理 */
   const onClickHandler = () => {
     // wordのステータスを更新
     setWordSchemes((prev) => {
       const newArray = [...prev];
-      newArray.splice(index, 1, { index, word, mark, isVisible });
+      newArray.splice(index, 1, {
+        index,
+        word,
+        mark: currentPickedMark,
+        isVisible,
+      });
       return newArray;
     });
-    setBgColor(getBgStyle(mark));
-    console.log("mark", mark);
-    console.log("style", getBgStyle(mark));
+    setBgColor(getBgStyle(currentPickedMark));
+    console.log("mark", currentPickedMark);
+    console.log("style", getBgStyle(currentPickedMark));
   };
   return (
     <button

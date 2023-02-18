@@ -1,14 +1,21 @@
 import { Dispatch, SetStateAction, VFC } from "react";
+import { DocumentScheme } from "../../../pages/document/[documentId]";
 
 type Props = {
+  states: {
+    translation: string;
+  };
   functions: {
-    setTranslation: Dispatch<SetStateAction<string>>;
+    setDocument: Dispatch<SetStateAction<DocumentScheme>>;
   };
 };
 
-const NoteSection: VFC<Props> = ({ functions }) => {
-  const handleBlurTranslation = (event) => {
-    functions.setTranslation(event.target.value);
+const NoteSection: VFC<Props> = ({ states, functions }) => {
+  const handleChangeTranslation = (event) => {
+    functions.setDocument((prev) => ({
+      ...prev,
+      translation: event.target.value,
+    }));
   };
 
   return (
@@ -16,8 +23,9 @@ const NoteSection: VFC<Props> = ({ functions }) => {
       <div className="mb-6">
         <textarea
           className="w-full h-30 p-6 text-gray-400 border rounded"
-          onBlur={handleBlurTranslation}
+          onChange={handleChangeTranslation}
           placeholder="Type translation..."
+          value={states.translation}
         ></textarea>
       </div>
     </div>

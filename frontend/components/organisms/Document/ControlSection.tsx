@@ -2,13 +2,14 @@ import { VFC, useState, useEffect, SetStateAction, Dispatch } from "react";
 import MarkPicker from "../../atoms/MarkPicker";
 import Word, { WordScheme } from "../../atoms/Word";
 import { MarkContext } from "../../../pages/_app";
+import { DocumentScheme } from "../../../pages/document/[documentId]";
 
 type Props = {
   states: {
     wordSchemes: WordScheme[];
   };
   functions: {
-    setSentence: Dispatch<SetStateAction<string>>;
+    setDocument: Dispatch<SetStateAction<DocumentScheme>>;
     setWordSchemes: Dispatch<SetStateAction<WordScheme[]>>;
     handleClickSave: (e: any) => void;
   };
@@ -22,7 +23,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
 
   const handleBlurTextArea = (event) => {
     const inputValue: string = event.target.value;
-    functions.setSentence(inputValue);
+    functions.setDocument((prev) => ({ ...prev, sentence: inputValue }));
     functions.setWordSchemes(
       inputValue
         .split(" ")
@@ -45,6 +46,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
               key={i + wordStatus.word}
               index={i}
               word={wordStatus.word}
+              mark={wordStatus.mark}
               isVisible={wordStatus.isVisible}
               setWordSchemes={functions.setWordSchemes}
             />
