@@ -16,7 +16,7 @@ exports.getDocuments = async (userId) => {
 };
 
 exports.getDocument = async (params) => {
-  const result = await executeQueryService.execute(async () => {
+  const { document, marks } = await executeQueryService.execute(async () => {
     const document = await prisma.document.findUnique({
       where: {
         id: parseInt(params.id),
@@ -32,7 +32,15 @@ exports.getDocument = async (params) => {
     console.log("marks", marks);
     return { document, marks };
   });
-  return result;
+  return {
+    id: document.id,
+    userId: document.userId,
+    sentence: document.sentence,
+    translation: document.translation,
+    createdAt: document.createdAt,
+    updatedAt: document.updatedAt,
+    marks: marks.map((mark) => ({ index: mark.index, type: mark.typeId })),
+  };
 };
 
 exports.createDocument = async (userId) => {
