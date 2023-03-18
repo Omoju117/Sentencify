@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { VFC, useState, useEffect } from "react";
+import { DocumentListItem } from "../../components/atoms/DocumentBar";
 import { WordScheme } from "../../components/atoms/Word";
 import ControlSection from "../../components/organisms/Document/ControlSection";
 import NoteSection from "../../components/organisms/Document/NoteSection";
+import { useFetchDocuments } from "../../hooks/useFetchDocuments";
+import { useSentenceModal } from "../../hooks/useSentenceModal";
 
 type MarkScheme = {
   index: number;
@@ -46,38 +49,52 @@ const Document: VFC<void> = () => {
         return "";
     }
   };
+  // Sentence入力モーダル
+  const [SentenceModal, open, isOpenModal] = useSentenceModal({
+    functions: { setWordSchemes, setDocument },
+  });
+
+  // IDで指定されたドキュメントを取得する
+  const fetchDocument = (documentId: string) => {
+    axios
+      .get("http://localhost:3000/document", {
+        params: {
+          id: documentId,
+          userId: "1",
+        },
+      })
+      .then((res) => {
+        console.log("res", res.data);
+        const document: DocumentScheme = res.data;
+        setDocument(document);
+        const words: WordScheme[] = document.sentence
+          .split(" ")
+          .map((word, index) => ({
+            word,
+            index,
+            mark: "",
+            isVisible: false,
+          }));
+        document.marks.forEach((mark) => {
+          const markedWord = words[mark.index];
+          markedWord.mark = getMarkType(parseInt(mark.type));
+          markedWord.isVisible = parseInt(mark.type) === 1;
+        });
+        setWordSchemes(words);
+      })
+      .catch((err) => {
+        console.log("error in request", err);
+      });
+  };
   /** 初回表示時にデータ取得処理 */
   useEffect(() => {
     if (router.query.isExisting) {
-      axios
-        .get("http://localhost:3000/document", {
-          params: {
-            id: router.query.documentId,
-            userId: "1",
-          },
-        })
-        .then((res) => {
-          console.log("res", res.data);
-          const document: DocumentScheme = res.data;
-          setDocument(document);
-          const words: WordScheme[] = document.sentence
-            .split(" ")
-            .map((word, index) => ({
-              word,
-              index,
-              mark: "",
-              isVisible: false,
-            }));
-          document.marks.forEach((mark) => {
-            const markedWord = words[mark.index];
-            markedWord.mark = getMarkType(parseInt(mark.type));
-            markedWord.isVisible = parseInt(mark.type) === 1;
-          });
-          setWordSchemes(words);
-        })
-        .catch((err) => {
-          console.log("error in request", err);
-        });
+      //TODO: fix here
+      fetchDocument(
+        typeof router.query.documentId === "string"
+          ? router.query.documentId
+          : "1"
+      );
     } else {
       setDocument({
         id:
@@ -93,6 +110,12 @@ const Document: VFC<void> = () => {
       });
     }
   }, [router.query]);
+
+  // Documentのリストを取得する
+  const { data, error } = useFetchDocuments();
+  const documentListItems: DocumentListItem[] = data;
+  if (error) return <div>Failed to load</div>;
+  if (!documentListItems) return <div>Loading...</div>;
 
   /**
    * 保存ボタン押下時処理
@@ -113,7 +136,6 @@ const Document: VFC<void> = () => {
         type: word.mark === "show" ? 1 : 2,
       }))
       .forEach((mark) => {
-        console.log("mark", mark);
         params.append("marks", JSON.stringify(mark));
       });
 
@@ -128,15 +150,50 @@ const Document: VFC<void> = () => {
   };
 
   return (
-    <div className="flex w-[100vw] h-[100vh] px-10 py-20">
-      <ControlSection
-        states={{ wordSchemes }}
-        functions={{ setDocument, setWordSchemes, handleClickSave }}
-      />
-      <NoteSection
-        states={{ translation: document.translation }}
-        functions={{ setDocument }}
-      />
+    <div className="relative w-[100vw] h-[100vh]">
+      <div className="flex flex-col px-10">
+        {isOpenModal ? <SentenceModal /> : ""}
+        <div className="absolute z-10">
+          <div className="flex w-full h-10 bg-black text-white space-x-2">
+            <button
+              className="w-[10%] rounded"
+              onClick={() => {
+                router.push({
+                  pathname: `/documents`,
+                });
+              }}
+            >
+              back to list
+            </button>
+            <button
+              className="w-[10%] rounded"
+              onClick={() => {
+                const currentIndex = documentListItems.findIndex(
+                  (documentListItem) => documentListItem.id === document.id
+                );
+                fetchDocument(
+                  documentListItems[currentIndex + 1].id.toString()
+                );
+              }}
+            >
+              next
+            </button>
+            <button className="w-[10%] rounded" onClick={open}>
+              edit
+            </button>
+          </div>
+          <div className="flex py-8">
+            <ControlSection
+              states={{ documentScheme: document, wordSchemes }}
+              functions={{ setWordSchemes, handleClickSave }}
+            />
+            <NoteSection
+              states={{ translation: document.translation }}
+              functions={{ setDocument }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

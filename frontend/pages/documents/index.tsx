@@ -1,22 +1,16 @@
 import axios from "axios";
 import { VFC } from "react";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import DocumentBar, {
   DocumentListItem,
 } from "../../components/atoms/DocumentBar";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import { useFetchDocuments } from "../../hooks/useFetchDocuments";
 
 const Documents: VFC<void> = () => {
   const router = useRouter();
   /** ドキュメントリストの要素 */
-  let documentListItems: DocumentListItem[];
-  const { data, error } = useSWR(
-    `http://localhost:3000/documentListItems?userId=1`,
-    fetcher
-  );
-  documentListItems = data;
+  const { data, error } = useFetchDocuments();
+  const documentListItems: DocumentListItem[] = data;
   if (error) return <div>Failed to load</div>;
   if (!documentListItems) return <div>Loading...</div>;
 

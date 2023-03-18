@@ -6,41 +6,81 @@ import { DocumentScheme } from "../../../pages/document/[documentId]";
 
 type Props = {
   states: {
+    documentScheme: DocumentScheme;
     wordSchemes: WordScheme[];
   };
   functions: {
-    setDocument: Dispatch<SetStateAction<DocumentScheme>>;
     setWordSchemes: Dispatch<SetStateAction<WordScheme[]>>;
     handleClickSave: (e: any) => void;
   };
 };
 
 const ControlSection: VFC<Props> = ({ states, functions }) => {
+  /** 現在選択されているマーク */
   const [mark, setMark] = useState("");
+  /** Wordsの可視状態 */
+  const [isVisible, setIsVisible] = useState(true);
   useEffect(() => {
     console.log(states.wordSchemes);
   }, [states.wordSchemes]);
 
-  const handleBlurTextArea = (event) => {
-    const inputValue: string = event.target.value;
-    functions.setDocument((prev) => ({ ...prev, sentence: inputValue }));
-    functions.setWordSchemes(
-      inputValue
-        .split(" ")
-        .map((word, index) => ({ word, index, mark: "", isVisible: true }))
-    );
+  const handleClickPlaySound = () => {
+    const base64ToBlobUrl = (base64) => {
+      const bin = atob(base64.replace(/^.*,/, ""));
+      const buffer = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) {
+        buffer[i] = bin.charCodeAt(i);
+      }
+      return window.URL.createObjectURL(
+        new Blob([buffer.buffer], { type: "audio/wav" })
+      );
+    };
+    // TODO: fix it to get from env
+    const url =
+      "https://texttospeech.googleapis.com/v1/text:synthesize?key=" +
+      "AIzaSyA53KrqH4G6vAgxz8SUIYO1bGaJtLdR4tU";
+    const data = {
+      input: {
+        text: states.documentScheme.sentence,
+      },
+      voice: {
+        languageCode: "en-US",
+        name: "en-US-Neural2-J",
+      },
+      audioConfig: {
+        audioEncoding: "MP3",
+        speaking_rate: "1.00",
+        pitch: "0.00",
+      },
+    };
+    const params = {
+      headers: {
+        "content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(data),
+      method: "POST",
+    };
+    fetch(url, params)
+      .then((data) => {
+        return data.json();
+      })
+      .then((res) => {
+        try {
+          var blobUrl = base64ToBlobUrl(res.audioContent);
+          var audio = new Audio();
+          audio.src = blobUrl;
+          audio.play();
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .catch((error) => alert(error));
   };
+
   return (
     <div className="flex flex-col w-[70%] pr-2">
-      <div className="flex mb-5">
-        <textarea
-          className="input-sentence w-full text-[16px] leading-4 p-8 border border-solid border-blue-600 rounded-[4px]"
-          onBlur={handleBlurTextArea}
-          placeholder="Type here..."
-        ></textarea>
-      </div>
       <MarkContext.Provider value={mark}>
-        <div className="flex flex-wrap space-x-6 p-4 items-center justify-start h-[60vw]">
+        <div className="flex flex-wrap space-x-6 p-4 items-center justify-start h-[40vw]">
           {states.wordSchemes.map((wordStatus, i) => (
             <Word
               key={i + wordStatus.word}
@@ -53,39 +93,49 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
           ))}
         </div>
         <div className="flex">
-          <MarkPicker markType={"show"} setMark={setMark} />
-          <MarkPicker markType={"note"} setMark={setMark} />
+          <MarkPicker functions={{ setMark }} />
           <button
-            className="w-[55%] border rounded"
+            className="w-[70%] border rounded"
             onClick={functions.handleClickSave}
           >
             save
           </button>
+          {isVisible ? (
+            <button
+              className="w-[10%] bg-gray-200 rounded"
+              onClick={() => {
+                functions.setWordSchemes(() =>
+                  states.wordSchemes.map((wordScheme) => ({
+                    ...wordScheme,
+                    isVisible: wordScheme.mark === "show",
+                  }))
+                );
+                setIsVisible(false);
+              }}
+            >
+              hide
+            </button>
+          ) : (
+            <button
+              className="w-[10%] bg-gray-600 rounded"
+              onClick={() => {
+                functions.setWordSchemes(() =>
+                  states.wordSchemes.map((wordScheme) => ({
+                    ...wordScheme,
+                    isVisible: true,
+                  }))
+                );
+                setIsVisible(true);
+              }}
+            >
+              reset
+            </button>
+          )}
           <button
-            className="w-[7.5%] bg-gray-200 rounded"
-            onClick={() => {
-              functions.setWordSchemes(() =>
-                states.wordSchemes.map((wordScheme) => ({
-                  ...wordScheme,
-                  isVisible: wordScheme.mark === "show",
-                }))
-              );
-            }}
+            className="w-[10%] bg-gray-300 rounded"
+            onClick={handleClickPlaySound}
           >
-            hide
-          </button>
-          <button
-            className="w-[7.5%] bg-gray-600 rounded"
-            onClick={() => {
-              functions.setWordSchemes(() =>
-                states.wordSchemes.map((wordScheme) => ({
-                  ...wordScheme,
-                  isVisible: true,
-                }))
-              );
-            }}
-          >
-            reset
+            sound
           </button>
         </div>
       </MarkContext.Provider>

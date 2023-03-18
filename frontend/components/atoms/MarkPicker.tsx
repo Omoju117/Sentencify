@@ -1,34 +1,24 @@
 import { Dispatch, SetStateAction, VFC } from "react";
 
 type Props = {
-  markType: string;
-  setMark: Dispatch<SetStateAction<string>>;
+  functions: {
+    setMark: Dispatch<SetStateAction<string>>;
+  };
 };
 
-// TODO: make this utilize
-const getBgStyle = (mark: string) => {
-  switch (mark) {
-    case "show":
-      return "bg-orange-300";
-    case "note":
-      return "bg-purple-300";
-    case "":
-    default:
-      return "bg-gray-100";
-  }
-};
-
-const MarkPicker: VFC<Props> = ({ markType, setMark }) => {
+const MarkPicker: VFC<Props> = ({ functions }) => {
   return (
-    <button
-      className={
-        getBgStyle(markType) + " flex w-[15%] h-20 rounded cursor-pointer"
-      }
-      onClick={() => {
-        setMark(markType);
-        console.log(markType + " picker clicked");
+    <select
+      className="flex w-[10%] h-20 rounded border cursor-pointer text-center"
+      onChange={(e) => {
+        functions.setMark(e.target.value);
+        console.log(e.target.value + " picker clicked");
       }}
-    ></button>
+    >
+      <option value="show">show</option>
+      <option value="note">note</option>
+      <option value="">normal</option>
+    </select>
   );
 };
 

@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const fs = require("fs");
 const app = express();
 const PORT = 3000;
@@ -67,6 +68,39 @@ app.put("/document", async (req, res) => {
   const result = await documentService.updateDocument(document);
   console.log("upt result", result);
   res.send({ message: "Data Received", data: result });
+});
+
+app.post("/translation", async (req, res) => {
+  let data = req.body;
+  let result = "";
+
+  if (data.text && data.target_lang) {
+    const config = {
+      headers: {
+        // TODO: fix it to get from env
+        Authorization: "DeepL-Auth-Key e7dcc2ce-19c3-8503-c4b6-9589e552f0a9:fx",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+    const params = {
+      text: data.text,
+      target_lang: data.target_lang,
+    };
+
+    console.log("params", params);
+    await axios
+      .post("https://api-free.deepl.com/v2/translate", params, config)
+      .then((res) => {
+        result = res.data;
+        console.log("translation res at back", res.data.text);
+      })
+      .catch((err) => {
+        console.log("error in translation request", err);
+      });
+  }
+
+  res.send(result);
 });
 
 app.listen(PORT, () => console.log(`Server is running :PORT ${PORT}`));

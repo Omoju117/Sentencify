@@ -80,16 +80,28 @@ exports.updateDocument = async (documentScheme) => {
       },
     });
 
-    documentScheme.marks.forEach(async (mark) => {
-      const { index, type } = JSON.parse(mark);
-      await prisma.marks.create({
-        data: {
-          documentId: parseInt(documentScheme.id),
-          index: index,
-          typeId: type,
-        },
-      });
-    });
+    // マークが設定されている場合
+    if (documentScheme.marks) {
+      const createMarks = async (mark) => {
+        const { index, type } = JSON.parse(mark);
+        return await prisma.marks.create({
+          data: {
+            documentId: parseInt(documentScheme.id),
+            index: index,
+            typeId: type,
+          },
+        });
+      };
+      // マークが一つか複数かで処理分岐 ※UrlSearchParamの仕様で型が分岐する
+      console.log("typeof", typeof documentScheme.marks);
+      if (typeof documentScheme.marks === "string") {
+        createMarks(documentScheme.marks);
+      } else {
+        documentScheme.marks.forEach(async (mark) => {
+          createMarks(mark);
+        });
+      }
+    }
 
     const allDocuments = await prisma.document.findMany();
     console.log("allDocuments", allDocuments);
