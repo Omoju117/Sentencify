@@ -1,9 +1,11 @@
 import express from "express";
 import axios from "axios";
+import dotenv from "dotenv";
 const app = express();
 const PORT = 3000;
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+dotenv.config();
 
 import cors from "cors";
 app.use(cors());
@@ -75,8 +77,7 @@ app.post("/translation", async (req, res) => {
   if (data.text && data.target_lang) {
     const config = {
       headers: {
-        // TODO: fix it to get from env
-        Authorization: "",
+        Authorization: process.env.DEEPL_API_KEY,
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/x-www-form-urlencoded",
       },

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import * as executeQueryService from "./executeQueryService";
 
-export const getDocuments = async (userId) => {
+export const getDocuments = async (userId: any) => {
   const result = await executeQueryService.execute(async () => {
     const documents = await prisma.document.findMany({
       where: {
@@ -15,7 +15,7 @@ export const getDocuments = async (userId) => {
   return result;
 };
 
-export const getDocument = async (params) => {
+export const getDocument = async (params: any) => {
   const { document, marks } = await executeQueryService.execute(async () => {
     const document = await prisma.document.findUnique({
       where: {
@@ -39,11 +39,11 @@ export const getDocument = async (params) => {
     translation: document.translation,
     createdAt: document.createdAt,
     updatedAt: document.updatedAt,
-    marks: marks.map((mark) => ({ index: mark.index, type: mark.typeId })),
+    marks: marks.map((mark: any) => ({ index: mark.index, type: mark.typeId })),
   };
 };
 
-export const createDocument = async (userId) => {
+export const createDocument = async (userId: string) => {
   const result = await executeQueryService.execute(async () => {
     const newDocument = await prisma.document.create({
       data: {
@@ -61,7 +61,7 @@ export const createDocument = async (userId) => {
   return result;
 };
 
-export const updateDocument = async (documentScheme) => {
+export const updateDocument = async (documentScheme: any) => {
   const result = await executeQueryService.execute(async () => {
     await prisma.document.update({
       where: {
@@ -82,7 +82,7 @@ export const updateDocument = async (documentScheme) => {
 
     // マークが設定されている場合
     if (documentScheme.marks) {
-      const createMarks = async (mark) => {
+      const createMarks = async (mark: any) => {
         const { index, type } = JSON.parse(mark);
         return await prisma.marks.create({
           data: {
@@ -97,7 +97,7 @@ export const updateDocument = async (documentScheme) => {
       if (typeof documentScheme.marks === "string") {
         createMarks(documentScheme.marks);
       } else {
-        documentScheme.marks.forEach(async (mark) => {
+        documentScheme.marks.forEach(async (mark: any) => {
           createMarks(mark);
         });
       }
