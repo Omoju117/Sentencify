@@ -38,8 +38,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
     };
     // TODO: fix it to get from env
     const url =
-      "https://texttospeech.googleapis.com/v1/text:synthesize?key=" +
-      "AIzaSyA53KrqH4G6vAgxz8SUIYO1bGaJtLdR4tU";
+      "https://texttospeech.googleapis.com/v1/text:synthesize?key=" + "";
     const data = {
       input: {
         text: states.documentScheme.sentence,

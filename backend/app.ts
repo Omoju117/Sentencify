@@ -76,7 +76,7 @@ app.post("/translation", async (req, res) => {
     const config = {
       headers: {
         // TODO: fix it to get from env
-        Authorization: "DeepL-Auth-Key e7dcc2ce-19c3-8503-c4b6-9589e552f0a9:fx",
+        Authorization: "",
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/x-www-form-urlencoded",
       },
