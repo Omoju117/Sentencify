@@ -63,25 +63,28 @@ export const useSentenceModal = (props: Props): UseModal => {
 
   const SentenceModal: FC = useCallback(() => {
     return (
-      <div className="relative flex flex-col w-[100vw] h-[100vh] bg-gray-300 z-[999] px-10 py-16">
-        <div className="flex justify-end">
-          <button className="rounded p-8" onClick={close}>
-            ×
-          </button>
+      <div className="absolute flex justify-center w-[91vw] h-[100vh] z-[999] left-[9%]">
+        <div className="flex flex-col w-[80vw]">
+          <div className="flex justify-end">
+            <button className="rounded p-8" onClick={close}>
+              ×
+            </button>
+          </div>
+          <textarea
+            className="input-sentence text-[16px] leading-4 p-8 border border-solid border-blue-600 rounded-[4px] opacity-100"
+            onBlur={handleBlurTextArea}
+            placeholder="Type here..."
+          ></textarea>
+          <div className="flex justify-end">
+            <button
+              className="w-20 rounded bg-green-500 text-white py-3 opacity-100"
+              onClick={close}
+            >
+              <span className="text-[14px] leading-5">OK</span>
+            </button>
+          </div>
         </div>
-        <textarea
-          className="input-sentence text-[16px] leading-4 p-8 border border-solid border-blue-600 rounded-[4px]"
-          onBlur={handleBlurTextArea}
-          placeholder="Type here..."
-        ></textarea>
-        <div className="flex justify-end">
-          <button
-            className="w-20 rounded bg-green-500 text-white py-3"
-            onClick={close}
-          >
-            <span className="text-[14px] leading-5">OK</span>
-          </button>
-        </div>
+        <div className="absolute w-full h-full  bg-gray-600 opacity-90 z-[-1]"></div>
       </div>
     );
   }, []);

@@ -64,16 +64,18 @@ const Word: VFC<Props> = ({ index, word, mark, isVisible, setWordSchemes }) => {
     console.log("style", getBgStyle(currentPickedMark));
   };
   return (
-    <button
-      className={
-        bgColor +
-        (isVisible ? "" : " invisible") +
-        " flex h-12 p-2 rounded-[4px] cursor-pointer"
-      }
-      onClick={onClickHandler}
-    >
-      <span className="w-full text-[24px] leading-6">{word}</span>
-    </button>
+    <div className="border-b border-gray-300">
+      <button
+        className={
+          bgColor +
+          (isVisible ? "" : " invisible") +
+          " flex p-2 rounded-[4px] cursor-pointer"
+        }
+        onClick={onClickHandler}
+      >
+        <span className="w-full text-[20px] leading-6">{word}</span>
+      </button>
+    </div>
   );
 };
 

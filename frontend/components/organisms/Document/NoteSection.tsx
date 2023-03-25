@@ -29,7 +29,7 @@ const NoteSection: VFC<Props> = ({ states, functions }) => {
       <hr className="block h-[1px] my-2" />
       <textarea
         className="w-full h-[73%] p-6 text-gray-400 border rounded border-none bg-gray-100"
-        placeholder="Type Something..."
+        placeholder="Note something temporarily..."
       ></textarea>
     </div>
   );

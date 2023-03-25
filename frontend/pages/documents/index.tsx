@@ -5,6 +5,7 @@ import DocumentBar, {
   DocumentListItem,
 } from "../../components/atoms/DocumentBar";
 import { useFetchDocuments } from "../../hooks/useFetchDocuments";
+import Header from "../../components/templates/Header";
 
 const Documents: VFC<void> = () => {
   const router = useRouter();
@@ -38,21 +39,24 @@ const Documents: VFC<void> = () => {
   };
 
   return (
-    <div className="flex flex-col w-[100vw] h-[100vh] items-center justify-start py-20">
-      <button
-        className="w-[50%] bg-green-500 text-white py-3 rounded"
-        onClick={handleClickCreate}
-      >
-        <span className="text-[16px] leading-5">Create New Document</span>
-      </button>
-      {documentListItems.map((documentListItem) => {
-        return (
-          <DocumentBar
-            key={documentListItem.id}
-            documentListItem={documentListItem}
-          />
-        );
-      })}
+    <div className="flex flex-col w-[100vw] h-[100vh]">
+      <Header />
+      <div className="flex flex-col items-center justify-start py-16">
+        <button
+          className="w-[50%] bg-green-500 text-white py-3 rounded"
+          onClick={handleClickCreate}
+        >
+          <span className="text-[16px] leading-5">Create New Document</span>
+        </button>
+        {documentListItems.map((documentListItem) => {
+          return (
+            <DocumentBar
+              key={documentListItem.id}
+              documentListItem={documentListItem}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

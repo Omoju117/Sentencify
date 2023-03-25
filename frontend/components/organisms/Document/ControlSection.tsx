@@ -3,6 +3,7 @@ import MarkPicker from "../../atoms/MarkPicker";
 import Word, { WordScheme } from "../../atoms/Word";
 import { MarkContext } from "../../../pages/_app";
 import { DocumentScheme } from "../../../pages/document/[documentId]";
+import Image from "next/image";
 
 type Props = {
   states: {
@@ -113,11 +114,16 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
                 setIsVisible(false);
               }}
             >
-              hide
+              <Image
+                src="/img/close-eye.svg"
+                width="40px"
+                height="40px"
+                alt="close-eye"
+              />
             </button>
           ) : (
             <button
-              className="w-[10%] bg-gray-600 rounded"
+              className="w-[10%] bg-gray-200 rounded"
               onClick={() => {
                 functions.setWordSchemes(() =>
                   states.wordSchemes.map((wordScheme) => ({
@@ -128,14 +134,24 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
                 setIsVisible(true);
               }}
             >
-              reset
+              <Image
+                src="/img/open-eye.svg"
+                width="40px"
+                height="40px"
+                alt="open-eye"
+              />
             </button>
           )}
           <button
-            className="w-[10%] bg-gray-300 rounded"
+            className="w-[10%] bg-gray-200 rounded"
             onClick={handleClickPlaySound}
           >
-            sound
+            <Image
+              src="/img/play-sound.svg"
+              width="40px"
+              height="40px"
+              alt="play-sound"
+            />
           </button>
         </div>
       </MarkContext.Provider>

@@ -151,12 +151,15 @@ const Document: VFC<void> = () => {
 
   return (
     <div className="relative w-[100vw] h-[100vh]">
-      <div className="flex flex-col px-10">
-        {isOpenModal ? <SentenceModal /> : ""}
-        <div className="absolute z-10">
-          <div className="flex w-full h-10 bg-black text-white space-x-2">
+      {isOpenModal ? <SentenceModal /> : ""}
+      <div className="h-full w-full absolute z-10">
+        <div className="flex h-full w-full">
+          <div className="flex flex-col h-full w-[10%] bg-gray-500 text-gray-300 text-[16px] leading-6">
+            <span className="text-[20px] font-bold text-gray-800 p-3 border-b-4 border-gray-700">
+              Sentencify
+            </span>
             <button
-              className="w-[10%] rounded"
+              className="border-b border-gray-700 p-3"
               onClick={() => {
                 router.push({
                   pathname: `/documents`,
@@ -166,7 +169,7 @@ const Document: VFC<void> = () => {
               back to list
             </button>
             <button
-              className="w-[10%] rounded"
+              className="border-b border-gray-700 p-3"
               onClick={() => {
                 const currentIndex = documentListItems.findIndex(
                   (documentListItem) => documentListItem.id === document.id
@@ -178,20 +181,18 @@ const Document: VFC<void> = () => {
             >
               next
             </button>
-            <button className="w-[10%] rounded" onClick={open}>
+            <button className="border-b border-gray-700 p-3" onClick={open}>
               edit
             </button>
           </div>
-          <div className="flex py-8">
-            <ControlSection
-              states={{ documentScheme: document, wordSchemes }}
-              functions={{ setWordSchemes, handleClickSave }}
-            />
-            <NoteSection
-              states={{ translation: document.translation }}
-              functions={{ setDocument }}
-            />
-          </div>
+          <ControlSection
+            states={{ documentScheme: document, wordSchemes }}
+            functions={{ setWordSchemes, handleClickSave }}
+          />
+          <NoteSection
+            states={{ translation: document.translation }}
+            functions={{ setDocument }}
+          />
         </div>
       </div>
     </div>
