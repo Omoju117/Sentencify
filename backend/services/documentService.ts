@@ -1,8 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-const executeQueryService = require("./executeQueryService");
+import * as executeQueryService from "./executeQueryService";
 
-exports.getDocuments = async (userId) => {
+export const getDocuments = async (userId) => {
   const result = await executeQueryService.execute(async () => {
     const documents = await prisma.document.findMany({
       where: {
@@ -15,7 +15,7 @@ exports.getDocuments = async (userId) => {
   return result;
 };
 
-exports.getDocument = async (params) => {
+export const getDocument = async (params) => {
   const { document, marks } = await executeQueryService.execute(async () => {
     const document = await prisma.document.findUnique({
       where: {
@@ -43,7 +43,7 @@ exports.getDocument = async (params) => {
   };
 };
 
-exports.createDocument = async (userId) => {
+export const createDocument = async (userId) => {
   const result = await executeQueryService.execute(async () => {
     const newDocument = await prisma.document.create({
       data: {
@@ -61,7 +61,7 @@ exports.createDocument = async (userId) => {
   return result;
 };
 
-exports.updateDocument = async (documentScheme) => {
+export const updateDocument = async (documentScheme) => {
   const result = await executeQueryService.execute(async () => {
     await prisma.document.update({
       where: {

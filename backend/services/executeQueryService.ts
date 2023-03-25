@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-exports.execute = (cbQuery) => {
+export const execute = (cbQuery: any) => {
   /** SQL実行箇所 */
   async function main() {
     // ... you will write your Prisma Client queries here

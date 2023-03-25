@@ -1,16 +1,14 @@
-const express = require("express");
-const axios = require("axios");
-const fs = require("fs");
+import express from "express";
+import axios from "axios";
 const app = express();
 const PORT = 3000;
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const cors = require("cors");
+import cors from "cors";
 app.use(cors());
 
-const mysql = require("mysql");
-const { json } = require("stream/consumers");
+import mysql from "mysql";
 
 const connection = mysql.createConnection({
   host: "sentence-writer-db",
@@ -38,7 +36,7 @@ app.get("/", (req, res) => {
   res.send({ result: "this message has sent from backend!" });
 });
 
-const documentService = require("./services/documentService");
+import * as documentService from "./services/documentService";
 app.get("/documentListItems", async (req, res) => {
   let params = req.query;
   console.log(params);
