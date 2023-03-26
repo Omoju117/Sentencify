@@ -1,97 +1,122 @@
 openapi: 3.0.0
 info:
   title: Sample API specification
-  version: '1.0'
+  version: "1.0"
 servers:
   - url: http://localhost:3000
 paths:
-  "/api/book/{book_id}":
+  "/documents":
     get:
-      description: 本取得API
-      operationId: getBook
+      description: ドキュメント一覧取得API
+      operationId: getDocuments
+      # クラスをカテゴライズして生成するために必要
+      tags:
+        - document
       parameters:
-        - name: book_id
-          description: 本ID
+        - name: userId
+          description: ユーザーID
           example: "1"
-          in: path
+          in: query
           schema:
             type: string
           required: true
       responses:
-        '200':
-          description: 'OK'
+        "200":
+          description: "OK"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: "1"
-                  title:
-                    type: string
-                    example: "ぐりとぐら"
-                required:
-                  - id
-                  - title
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
         "400":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Bad Request
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Unauthorized
         "403":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Forbidden
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Not Found
         "500":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Internal Server Error
         "503":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
           description: Service Unavailable
-components:
-  schemas:
-    ErrorResponse:
-      description: Error Schema
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Some Error"
-    Book:
-      description: 本
+    Document:
+      description: ドキュメント
       type: object
       properties:
         id:
-          description: 本ID
+          description: ドキュメントID
           type: string
           example: "1"
-        title:
-          description: 本のタイトル
+        userId:
+          description: ユーザーID
           type: string
-          example: "ぐりとぐら"
+          example: "1"
+        sentence:
+          description: 英文
+          type: string
+          example: "It's a sample sentence."
+        translation:
+          description: 訳
+          type: string
+          example: "これはサンプルの文章です。"
+        createdAt:
+          description: 作成日
+          type: string
+          example: "2023/1/1"
+        updatedAt:
+          description: 更新日
+          type: string
+          example: "2023/1/1"
+        marks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Mark"
       required:
         - id
-        - title
-
+        - userId
+        - sentence
+        - translation
+        - createdAt
+        - updatedAt
+        - marks
+    Mark:
+      description: 単語に付与されたマーク
+      type: object
+      properties:
+        index:
+          description: マークが付与されているインデックス
+          type: integer
+          example: 1
+        type:
+          description: マークの種別
+          type: string
+          example: "1"
+      required:
+        - index
+        - type

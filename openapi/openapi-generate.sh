@@ -1,6 +1,5 @@
 #!/bin/bash
 SOURCEPATH=$PWD/client/src/api/generated
-BACKEND=$PWD/../backend
 FRONTEND=$PWD/../frontend
 
 docker run --rm -v $(pwd):/local \
@@ -9,5 +8,4 @@ docker run --rm -v $(pwd):/local \
     -g typescript-axios \
     -o /local/client/src/api/generated
 
-cp ${SOURCEPATH}/api.ts ${SOURCEPATH}/base.ts ${SOURCEPATH}/index.ts ${SOURCEPATH}/configuration.ts ${BACKEND}/schemes
 cp ${SOURCEPATH}/api.ts ${SOURCEPATH}/base.ts ${SOURCEPATH}/index.ts ${SOURCEPATH}/configuration.ts ${FRONTEND}/schemes
