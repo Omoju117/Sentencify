@@ -43,3 +43,6 @@ frontend/*.tsbuildinfo
 
 # database
 db/data/
+
+# openapi
+openapi/client
