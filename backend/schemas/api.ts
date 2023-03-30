@@ -69,13 +69,19 @@ export interface Document {
     marks: Array<Mark>;
 }
 /**
- * Error Schema
+ * 
  * @export
  * @interface ErrorResponse
  */
 export interface ErrorResponse {
     /**
-     * 
+     * ステータスコード
+     * @type {number}
+     * @memberof ErrorResponse
+     */
+    status?: number;
+    /**
+     * エラーメッセージ
      * @type {string}
      * @memberof ErrorResponse
      */

@@ -65,6 +65,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
           description: Service Unavailable
+components:
+  schemas:
     Document:
       description: ドキュメント
       type: object
@@ -120,3 +122,14 @@ paths:
       required:
         - index
         - type
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          description: ステータスコード
+          type: integer
+          example: 400
+        message:
+          description: エラーメッセージ
+          type: string
+          example: "invalid parameters"
