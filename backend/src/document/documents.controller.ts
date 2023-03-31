@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
 import { Document } from 'schemas';
-import { DocumentService } from 'src/services/documentService';
+import { DocumentService } from 'src/document/documentService';
 
 @Controller()
 export class DocumentsController {

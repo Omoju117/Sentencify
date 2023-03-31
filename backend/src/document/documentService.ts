@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Document } from 'schemas';
 const prisma = new PrismaClient();
-import * as executeQueryService from './executeQueryService';
+import * as executeQueryService from '../services/executeQueryService';
 
 @Injectable()
 export class DocumentService {
