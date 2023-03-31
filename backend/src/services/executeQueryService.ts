@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const execute = (cbQuery: any) => {
@@ -11,7 +11,7 @@ export const execute = (cbQuery: any) => {
 
   return main()
     .then(async (result) => {
-      console.log("result", result);
+      console.log('result', result);
       await prisma.$disconnect();
       return result;
     })

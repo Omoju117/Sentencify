@@ -8,7 +8,7 @@ export interface IFetchDocuments {
 export const useFetchDocuments = (): IFetchDocuments => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, error } = useSWR(
-    `http://localhost:3000/documentListItems?userId=1`,
+    `http://localhost:3000/documents?userId=1`,
     fetcher
   );
 

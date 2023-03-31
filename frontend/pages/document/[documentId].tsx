@@ -59,8 +59,8 @@ const Document: VFC<void> = () => {
     axios
       .get("http://localhost:3000/document", {
         params: {
-          id: documentId,
           userId: "1",
+          documentId,
         },
       })
       .then((res) => {

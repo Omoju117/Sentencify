@@ -7,6 +7,8 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Home: VFC<void> = () => {
   const { data, error } = useSWR("http://localhost:3000/", fetcher);
+  console.log("received data is", data);
+  console.log("error", error);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
