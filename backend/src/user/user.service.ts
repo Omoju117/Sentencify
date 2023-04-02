@@ -13,7 +13,7 @@ export class UserService {
     const result = await this.executeQueryService.execute(async () => {
       const newUser = await prisma.user.create({
         data: {
-          email: param.id,
+          email: param.email,
           password: param.password,
         },
       });
@@ -28,12 +28,10 @@ export class UserService {
       const foundUser = await prisma.user.findUnique({
         where: {
           email: user.email,
-          password: user.password,
         },
       });
-      // TODO: check a behavior when prisma cannot find a specific user.
       console.log('foundUser', foundUser);
-      return true;
+      return foundUser ?? false;
     });
     return result;
   }

@@ -15,7 +15,6 @@ export class DocumentService {
           userId: parseInt(userId),
         },
       });
-      console.log('documents', documents);
       return documents;
     });
     return result;

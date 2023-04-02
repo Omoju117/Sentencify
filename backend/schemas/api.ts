@@ -99,11 +99,11 @@ export interface ErrorResponse {
  */
 export interface LoginRequestBody {
   /**
-   * ID
+   * IDを兼ねるメールアドレス
    * @type {string}
    * @memberof LoginRequestBody
    */
-  id: string;
+  email: string;
   /**
    * パスワード
    * @type {string}
@@ -137,11 +137,11 @@ export interface Mark {
  */
 export interface RegisterRequestBody {
   /**
-   * ID
+   * IDとなるメールアドレス
    * @type {string}
    * @memberof RegisterRequestBody
    */
-  id: string;
+  email: string;
   /**
    * パスワード
    * @type {string}

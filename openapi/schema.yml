@@ -478,31 +478,31 @@ components:
       type: object
       description: ログインAPIリクエストボディ
       properties:
-        id:
-          description: ID
+        email:
+          description: IDを兼ねるメールアドレス
           type: string
-          example: "sample123"
+          example: "sample123@test.com"
         password:
           description: パスワード
           type: string
           example: "samplePass123"
       required:
-        - id
+        - email
         - password
     RegisterRequestBody:
       type: object
       description: 新規登録APIリクエストボディ
       properties:
-        id:
-          description: ID
+        email:
+          description: IDとなるメールアドレス
           type: string
-          example: "sample123"
+          example: "sample123@test.com"
         password:
           description: パスワード
           type: string
           example: "samplePass123"
       required:
-        - id
+        - email
         - password
       #-------------------------------
     # Reusable errors
