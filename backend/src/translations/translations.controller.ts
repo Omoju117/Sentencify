@@ -1,14 +1,14 @@
+import { TranslateRequestBody } from 'schemas/api';
 import { Body, Controller, Post } from '@nestjs/common';
 import axios from 'axios';
 
 @Controller()
 export class TranslationsController {
-  // TODO: fix argument type after defining specification.
   @Post('translation')
-  async translate(@Body() data: any): Promise<string> {
+  async translate(@Body() body: TranslateRequestBody): Promise<string> {
     let result = '';
 
-    if (data.text && data.target_lang) {
+    if (body.text && body.targetLang) {
       const config = {
         headers: {
           Authorization: process.env.DEEPL_API_KEY,
@@ -17,8 +17,8 @@ export class TranslationsController {
         },
       };
       const params = {
-        text: data.text,
-        target_lang: data.target_lang,
+        text: body.text,
+        target_lang: body.targetLang,
       };
 
       console.log('params', params);

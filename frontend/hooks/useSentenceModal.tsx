@@ -29,12 +29,12 @@ export const useSentenceModal = (props: Props): UseModal => {
     const params = new URLSearchParams();
     params.append("text", availableText);
     // TODO:fix it to be able to select target_lang.
-    params.append("target_lang", "JA");
+    params.append("targetLang", "JA");
 
     await axios
       .post("http://localhost:3000/translation", params)
       .then((res) => {
-        console.log("translation res at front", res.data);
+        console.log("translation res at front", res);
         translation =
           res.data.translations.length > 0 ? res.data.translations[0].text : "";
       })

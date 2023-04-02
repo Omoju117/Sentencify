@@ -5,6 +5,112 @@ info:
 servers:
   - url: http://localhost:3000
 paths:
+  "/login":
+    post:
+      description: ログインAPI
+      operationId: login
+      tags:
+        - login
+      requestBody:
+        $ref: "#/components/requestBodies/LoginRequestBody"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                description: Token
+                type: string
+                example: "xxx"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
+  "/register":
+    post:
+      description: 新規登録API
+      operationId: register
+      tags:
+        - register
+      requestBody:
+        $ref: "#/components/requestBodies/RegisterRequestBody"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                description: Token
+                type: string
+                example: "xxx"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
   "/documents":
     get:
       description: ドキュメント一覧取得API
@@ -29,6 +135,234 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Document"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
+  "/document":
+    get:
+      description: ドキュメント取得API
+      operationId: getDocument
+      tags:
+        - document
+      parameters:
+        - name: userId
+          description: ユーザーID
+          example: "1"
+          in: query
+          schema:
+            type: string
+          required: true
+        - name: documentId
+          description: ドキュメントID
+          example: "1"
+          in: query
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
+    post:
+      description: ドキュメント新規作成API
+      operationId: createDocument
+      tags:
+        - document
+      parameters:
+        - name: userId
+          description: ユーザーID
+          example: "1"
+          in: query
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
+    put:
+      description: ドキュメント更新API
+      operationId: updateDocument
+      tags:
+        - document
+      requestBody:
+        description: 更新するドキュメントの内容
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Document"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: boolean
+                description: 実行結果
+                example: true
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal Server Error
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Service Unavailable
+  "/translation":
+    post:
+      description: 翻訳結果取得API
+      operationId: translate
+      tags:
+        - translation
+      requestBody:
+        $ref: "#/components/requestBodies/TranslateRequestBody"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Translation"
         "400":
           content:
             application/json:
@@ -122,6 +456,57 @@ components:
       required:
         - index
         - type
+    Translation:
+      description: 翻訳結果
+      type: string
+    TranslateRequestBody:
+      type: object
+      description: 翻訳APIリクエストボディ
+      properties:
+        text:
+          description: 原文
+          type: string
+          example: "翻訳元のテキスト"
+        targetLang:
+          description: 翻訳する言語
+          type: string
+          example: "ja"
+      required:
+        - text
+        - targetLang
+    LoginRequestBody:
+      type: object
+      description: ログインAPIリクエストボディ
+      properties:
+        id:
+          description: ID
+          type: string
+          example: "sample123"
+        password:
+          description: パスワード
+          type: string
+          example: "samplePass123"
+      required:
+        - id
+        - password
+    RegisterRequestBody:
+      type: object
+      description: 新規登録APIリクエストボディ
+      properties:
+        id:
+          description: ID
+          type: string
+          example: "sample123"
+        password:
+          description: パスワード
+          type: string
+          example: "samplePass123"
+      required:
+        - id
+        - password
+      #-------------------------------
+    # Reusable errors
+    #-------------------------------
     ErrorResponse:
       type: object
       properties:
@@ -133,3 +518,28 @@ components:
           description: エラーメッセージ
           type: string
           example: "invalid parameters"
+  #-------------------------------
+  # Reusable request bodies
+  #-------------------------------
+  requestBodies:
+    LoginRequestBody:
+      description: ログインAPIリクエストボディ
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LoginRequestBody"
+    RegisterRequestBody:
+      description: 新規登録APIリクエストボディ
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegisterRequestBody"
+    TranslateRequestBody:
+      description: 翻訳APIリクエストボディ
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TranslateRequestBody"
