@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Document } from 'schemas';
+import { ExecuteQueryService } from 'src/services/executeQuery.service';
 const prisma = new PrismaClient();
-import * as executeQueryService from '../services/executeQueryService';
 
 @Injectable()
 export class DocumentService {
+  constructor(private readonly executeQueryService: ExecuteQueryService) {}
+
   async getDocuments(userId: string): Promise<Document[]> {
-    const result = await executeQueryService.execute(async () => {
+    const result = await this.executeQueryService.execute(async () => {
       const documents = await prisma.document.findMany({
         where: {
           userId: parseInt(userId),
@@ -20,22 +22,24 @@ export class DocumentService {
   }
 
   async getDocument(userId: string, documentId: string): Promise<Document> {
-    const { document, marks } = await executeQueryService.execute(async () => {
-      const document = await prisma.document.findUnique({
-        where: {
-          id: parseInt(documentId),
-        },
-      });
-      console.log('document', document);
+    const { document, marks } = await this.executeQueryService.execute(
+      async () => {
+        const document = await prisma.document.findUnique({
+          where: {
+            id: parseInt(documentId),
+          },
+        });
+        console.log('document', document);
 
-      const marks = await prisma.marks.findMany({
-        where: {
-          documentId: parseInt(documentId),
-        },
-      });
-      console.log('marks', marks);
-      return { document, marks };
-    });
+        const marks = await prisma.marks.findMany({
+          where: {
+            documentId: parseInt(documentId),
+          },
+        });
+        console.log('marks', marks);
+        return { document, marks };
+      },
+    );
     return {
       id: document.id,
       userId: document.userId,
@@ -51,7 +55,7 @@ export class DocumentService {
   }
 
   async createDocument(userId: string): Promise<Document> {
-    const result = await executeQueryService.execute(async () => {
+    const result = await this.executeQueryService.execute(async () => {
       const newDocument = await prisma.document.create({
         data: {
           userId: parseInt(userId),
@@ -69,7 +73,7 @@ export class DocumentService {
   }
 
   async updateDocument(documentScheme: Document): Promise<boolean> {
-    const result = await executeQueryService.execute(async () => {
+    const result = await this.executeQueryService.execute(async () => {
       await prisma.document.update({
         where: {
           id: parseInt(documentScheme.id),
