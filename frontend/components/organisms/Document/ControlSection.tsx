@@ -115,8 +115,8 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             >
               <Image
                 src="/img/close-eye.svg"
-                width="40px"
-                height="40px"
+                width={40}
+                height={40}
                 alt="close-eye"
               />
             </button>
@@ -135,8 +135,8 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             >
               <Image
                 src="/img/open-eye.svg"
-                width="40px"
-                height="40px"
+                width={40}
+                height={40}
                 alt="open-eye"
               />
             </button>
@@ -147,8 +147,8 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
           >
             <Image
               src="/img/play-sound.svg"
-              width="40px"
-              height="40px"
+              width={40}
+              height={40}
               alt="play-sound"
             />
           </button>
