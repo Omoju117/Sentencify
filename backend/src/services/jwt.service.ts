@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Base64 } from 'js-base64';
 
 // TODO: CSRF対策
 // https://zenn.dev/marokanatani/articles/d0777a34641d22
@@ -8,9 +9,7 @@ export class JwtService {
     const { createHmac } = await import('node:crypto');
     const base64 = (json) => {
       const jsonStr = JSON.stringify(json);
-      const jsonB64 = Buffer.from(jsonStr).toString('base64');
-      const jsonB64NoPadding = jsonB64.replace(/={1,2}$/, '');
-      return jsonB64NoPadding;
+      return Base64.encode(jsonStr);
     };
 
     const HMAC_SHA256 = (key: string, data: string) => {
@@ -48,6 +47,8 @@ export class JwtService {
     const splits = token.split('.');
     const unsignedToken = [splits[0], splits[1]].join('.');
     const signature = splits[2];
+    const decodedPayload = Base64.decode(splits[1]);
+    console.log('decodedUserEmail', JSON.parse(decodedPayload).sub);
 
     return HMAC_SHA256(key, unsignedToken) === signature;
   }
