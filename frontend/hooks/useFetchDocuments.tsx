@@ -6,11 +6,9 @@ export interface IFetchDocuments {
 }
 /** Documentのリストをfetchする処理 */
 export const useFetchDocuments = (): IFetchDocuments => {
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error } = useSWR(
-    `http://localhost:3000/documents?userId=1`,
-    fetcher
-  );
+  const fetcher = (...args) =>
+    fetch(...args, { credentials: "include" }).then((res) => res.json());
+  const { data, error } = useSWR(`http://localhost:3000/documents`, fetcher);
 
   return { data, error };
 };

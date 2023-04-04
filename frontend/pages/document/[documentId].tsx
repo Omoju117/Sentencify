@@ -59,7 +59,6 @@ const Document: VFC<void> = () => {
     axios
       .get("http://localhost:3000/document", {
         params: {
-          userId: "1",
           documentId,
         },
       })
@@ -101,6 +100,7 @@ const Document: VFC<void> = () => {
           typeof router.query.documentId === "string"
             ? parseInt(router.query.documentId)
             : 0,
+        //TODO: delete this unnecessary userId
         userId: 1,
         sentence: "",
         translation: "",

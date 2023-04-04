@@ -47,9 +47,19 @@ export class JwtService {
     const splits = token.split('.');
     const unsignedToken = [splits[0], splits[1]].join('.');
     const signature = splits[2];
-    const decodedPayload = Base64.decode(splits[1]);
-    console.log('decodedUserEmail', JSON.parse(decodedPayload).sub);
 
     return HMAC_SHA256(key, unsignedToken) === signature;
+  }
+
+  async getIdFromToken(token: string): Promise<string> {
+    console.log('token:', token);
+    if (await this.verifyToken(token)) {
+      const splits = token.split('.');
+      const decodedPayload = Base64.decode(splits[1]);
+      const decodedUserEmail = JSON.parse(decodedPayload).sub;
+      console.log('decodedUserEmail: ', decodedUserEmail);
+      return decodedUserEmail;
+    }
+    return '';
   }
 }

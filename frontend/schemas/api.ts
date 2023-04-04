@@ -179,18 +179,10 @@ export const DocumentApiAxiosParamCreator = function (
   return {
     /**
      * ドキュメント新規作成API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createDocument(userId: string, options: any = {}): RequestArgs {
-      // verify required parameter 'userId' is not null or undefined
-      if (userId === null || userId === undefined) {
-        throw new RequiredError(
-          "userId",
-          "Required parameter userId was null or undefined when calling createDocument."
-        );
-      }
+    createDocument(options: any = {}): RequestArgs {
       const localVarPath = `/document`;
       const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
       let baseOptions;
@@ -204,10 +196,6 @@ export const DocumentApiAxiosParamCreator = function (
       };
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
-
-      if (userId !== undefined) {
-        localVarQueryParameter["userId"] = userId;
-      }
 
       localVarUrlObj.query = {
         ...localVarUrlObj.query,
@@ -228,23 +216,11 @@ export const DocumentApiAxiosParamCreator = function (
     },
     /**
      * ドキュメント取得API
-     * @param {string} userId ユーザーID
      * @param {string} documentId ドキュメントID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getDocument(
-      userId: string,
-      documentId: string,
-      options: any = {}
-    ): RequestArgs {
-      // verify required parameter 'userId' is not null or undefined
-      if (userId === null || userId === undefined) {
-        throw new RequiredError(
-          "userId",
-          "Required parameter userId was null or undefined when calling getDocument."
-        );
-      }
+    getDocument(documentId: string, options: any = {}): RequestArgs {
       // verify required parameter 'documentId' is not null or undefined
       if (documentId === null || documentId === undefined) {
         throw new RequiredError(
@@ -265,10 +241,6 @@ export const DocumentApiAxiosParamCreator = function (
       };
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
-
-      if (userId !== undefined) {
-        localVarQueryParameter["userId"] = userId;
-      }
 
       if (documentId !== undefined) {
         localVarQueryParameter["documentId"] = documentId;
@@ -293,18 +265,10 @@ export const DocumentApiAxiosParamCreator = function (
     },
     /**
      * ドキュメント一覧取得API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getDocuments(userId: string, options: any = {}): RequestArgs {
-      // verify required parameter 'userId' is not null or undefined
-      if (userId === null || userId === undefined) {
-        throw new RequiredError(
-          "userId",
-          "Required parameter userId was null or undefined when calling getDocuments."
-        );
-      }
+    getDocuments(options: any = {}): RequestArgs {
       const localVarPath = `/documents`;
       const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
       let baseOptions;
@@ -318,10 +282,6 @@ export const DocumentApiAxiosParamCreator = function (
       };
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
-
-      if (userId !== undefined) {
-        localVarQueryParameter["userId"] = userId;
-      }
 
       localVarUrlObj.query = {
         ...localVarUrlObj.query,
@@ -404,17 +364,14 @@ export const DocumentApiFp = function (configuration?: Configuration) {
   return {
     /**
      * ドキュメント新規作成API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     createDocument(
-      userId: string,
       options?: any
     ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Document> {
-      const localVarAxiosArgs = DocumentApiAxiosParamCreator(
-        configuration
-      ).createDocument(userId, options);
+      const localVarAxiosArgs =
+        DocumentApiAxiosParamCreator(configuration).createDocument(options);
       return (
         axios: AxiosInstance = globalAxios,
         basePath: string = BASE_PATH
@@ -428,19 +385,17 @@ export const DocumentApiFp = function (configuration?: Configuration) {
     },
     /**
      * ドキュメント取得API
-     * @param {string} userId ユーザーID
      * @param {string} documentId ドキュメントID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     getDocument(
-      userId: string,
       documentId: string,
       options?: any
     ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Document> {
       const localVarAxiosArgs = DocumentApiAxiosParamCreator(
         configuration
-      ).getDocument(userId, documentId, options);
+      ).getDocument(documentId, options);
       return (
         axios: AxiosInstance = globalAxios,
         basePath: string = BASE_PATH
@@ -454,20 +409,17 @@ export const DocumentApiFp = function (configuration?: Configuration) {
     },
     /**
      * ドキュメント一覧取得API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     getDocuments(
-      userId: string,
       options?: any
     ): (
       axios?: AxiosInstance,
       basePath?: string
     ) => AxiosPromise<Array<Document>> {
-      const localVarAxiosArgs = DocumentApiAxiosParamCreator(
-        configuration
-      ).getDocuments(userId, options);
+      const localVarAxiosArgs =
+        DocumentApiAxiosParamCreator(configuration).getDocuments(options);
       return (
         axios: AxiosInstance = globalAxios,
         basePath: string = BASE_PATH
@@ -518,38 +470,34 @@ export const DocumentApiFactory = function (
   return {
     /**
      * ドキュメント新規作成API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createDocument(userId: string, options?: any) {
-      return DocumentApiFp(configuration).createDocument(userId, options)(
+    createDocument(options?: any) {
+      return DocumentApiFp(configuration).createDocument(options)(
         axios,
         basePath
       );
     },
     /**
      * ドキュメント取得API
-     * @param {string} userId ユーザーID
      * @param {string} documentId ドキュメントID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getDocument(userId: string, documentId: string, options?: any) {
-      return DocumentApiFp(configuration).getDocument(
-        userId,
-        documentId,
-        options
-      )(axios, basePath);
+    getDocument(documentId: string, options?: any) {
+      return DocumentApiFp(configuration).getDocument(documentId, options)(
+        axios,
+        basePath
+      );
     },
     /**
      * ドキュメント一覧取得API
-     * @param {string} userId ユーザーID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getDocuments(userId: string, options?: any) {
-      return DocumentApiFp(configuration).getDocuments(userId, options)(
+    getDocuments(options?: any) {
+      return DocumentApiFp(configuration).getDocuments(options)(
         axios,
         basePath
       );
@@ -578,13 +526,12 @@ export const DocumentApiFactory = function (
 export class DocumentApi extends BaseAPI {
   /**
    * ドキュメント新規作成API
-   * @param {string} userId ユーザーID
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof DocumentApi
    */
-  public createDocument(userId: string, options?: any) {
-    return DocumentApiFp(this.configuration).createDocument(userId, options)(
+  public createDocument(options?: any) {
+    return DocumentApiFp(this.configuration).createDocument(options)(
       this.axios,
       this.basePath
     );
@@ -592,29 +539,26 @@ export class DocumentApi extends BaseAPI {
 
   /**
    * ドキュメント取得API
-   * @param {string} userId ユーザーID
    * @param {string} documentId ドキュメントID
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof DocumentApi
    */
-  public getDocument(userId: string, documentId: string, options?: any) {
-    return DocumentApiFp(this.configuration).getDocument(
-      userId,
-      documentId,
-      options
-    )(this.axios, this.basePath);
+  public getDocument(documentId: string, options?: any) {
+    return DocumentApiFp(this.configuration).getDocument(documentId, options)(
+      this.axios,
+      this.basePath
+    );
   }
 
   /**
    * ドキュメント一覧取得API
-   * @param {string} userId ユーザーID
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof DocumentApi
    */
-  public getDocuments(userId: string, options?: any) {
-    return DocumentApiFp(this.configuration).getDocuments(userId, options)(
+  public getDocuments(options?: any) {
+    return DocumentApiFp(this.configuration).getDocuments(options)(
       this.axios,
       this.basePath
     );

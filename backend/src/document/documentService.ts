@@ -8,11 +8,17 @@ const prisma = new PrismaClient();
 export class DocumentService {
   constructor(private readonly executeQueryService: ExecuteQueryService) {}
 
-  async getDocuments(userId: string): Promise<Document[]> {
+  async getDocuments(userEmail: string): Promise<Document[]> {
     const result = await this.executeQueryService.execute(async () => {
+      const targetUser = await prisma.user.findUnique({
+        where: {
+          email: userEmail,
+        },
+      });
+
       const documents = await prisma.document.findMany({
         where: {
-          userId: parseInt(userId),
+          userId: targetUser.id,
         },
       });
       return documents;
@@ -20,7 +26,7 @@ export class DocumentService {
     return result;
   }
 
-  async getDocument(userId: string, documentId: string): Promise<Document> {
+  async getDocument(documentId: string): Promise<Document> {
     const { document, marks } = await this.executeQueryService.execute(
       async () => {
         const document = await prisma.document.findUnique({
@@ -53,18 +59,21 @@ export class DocumentService {
     };
   }
 
-  async createDocument(userId: string): Promise<Document> {
+  async createDocument(userEmail: string): Promise<Document> {
     const result = await this.executeQueryService.execute(async () => {
+      const targetUser = await prisma.user.findUnique({
+        where: {
+          email: userEmail,
+        },
+      });
+
       const newDocument = await prisma.document.create({
         data: {
-          userId: parseInt(userId),
+          userId: targetUser.id,
           sentence: '',
           translation: '',
         },
       });
-
-      const allDocuments = await prisma.document.findMany();
-      console.log('allDocuments', allDocuments);
 
       return newDocument;
     });
@@ -112,11 +121,6 @@ export class DocumentService {
           });
         }
       }
-
-      const allDocuments = await prisma.document.findMany();
-      console.log('allDocuments', allDocuments);
-      const allMarks = await prisma.marks.findMany();
-      console.log('allMarks', allMarks);
 
       return true;
     });

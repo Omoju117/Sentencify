@@ -1,43 +1,57 @@
-import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req } from '@nestjs/common';
 import { Document } from 'schemas';
 import { DocumentService } from 'src/document/documentService';
+import { JwtService } from 'src/services/jwt.service';
+import { Request } from 'express';
 
+// TODO: この記事を読んで型を改善
+// https://zenn.dev/happou31/articles/2cc0f62ac50f7e
 @Controller()
 export class DocumentsController {
-  constructor(private readonly documentService: DocumentService) {}
+  constructor(
+    private readonly documentService: DocumentService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Get('documents')
-  async getDocuments(@Query('userId') userId: string): Promise<Document[]> {
-    console.log('userId', userId);
-    const result = await this.documentService.getDocuments(userId);
+  async getDocuments(@Req() request: Request): Promise<Document[]> {
+    let result = null;
+    const userEmail = await this.jwtService.getIdFromToken(
+      request.cookies['token'],
+    );
+    if (userEmail) {
+      result = await this.documentService.getDocuments(userEmail);
+    }
+    // TODO: error handling
     console.log('result', result);
     return result;
   }
 
   @Get('document')
   async getDocument(
-    @Query('userId') userId: string,
     @Query('documentId') documentId: string,
   ): Promise<Document> {
-    console.log('userId', userId, 'documentId', documentId);
-    const result = await this.documentService.getDocument(userId, documentId);
+    // TODO: implement JWT authentication as middleware
+    const result = await this.documentService.getDocument(documentId);
     console.log('result', result);
     return result;
   }
 
   @Post('document')
-  async createDocument(@Body('userId') userId: string): Promise<Document> {
-    // TODO: この記事を読んで型を改善
-    // https://zenn.dev/happou31/articles/2cc0f62ac50f7e
-    console.log('userId', userId);
-    const result = await this.documentService.createDocument(userId);
+  async createDocument(@Req() request: Request): Promise<Document> {
+    let result = null;
+    const userEmail = await this.jwtService.getIdFromToken(
+      request.cookies['token'],
+    );
+    if (userEmail) {
+      result = await this.documentService.createDocument(userEmail);
+    }
     console.log('result', result);
     return result;
   }
 
   @Put('document')
   async updateDocument(@Body() document: Document): Promise<boolean> {
-    console.log('document', document);
     const result = await this.documentService.updateDocument(document);
     console.log('result', result);
     return result;
