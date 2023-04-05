@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useRouter } from "next/router";
 import { VFC, useState, useEffect } from "react";
+import { axiosInstance } from "../../apis/api";
 import { DocumentListItem } from "../../components/atoms/DocumentBar";
 import { WordScheme } from "../../components/atoms/Word";
 import ControlSection from "../../components/organisms/Document/ControlSection";
@@ -55,8 +55,8 @@ const Document: VFC<void> = () => {
   });
 
   // IDで指定されたドキュメントを取得する
-  const fetchDocument = (documentId: string) => {
-    axios
+  const fetchDocument = async (documentId: string) => {
+    await axiosInstance
       .get("http://localhost:3000/document", {
         params: {
           documentId,
@@ -121,7 +121,7 @@ const Document: VFC<void> = () => {
    * 保存ボタン押下時処理
    * @param e イベント
    */
-  const handleClickSave = (e) => {
+  const handleClickSave = async (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
     console.log("save start");
@@ -139,7 +139,7 @@ const Document: VFC<void> = () => {
         params.append("marks", JSON.stringify(mark));
       });
 
-    axios
+    await axiosInstance
       .put("http://localhost:3000/document", params)
       .then((res) => {
         console.log("res", res.data);

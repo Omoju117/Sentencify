@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useRef, useState, VFC } from "react";
 import { useRouter } from "next/router";
 import Header from "../../components/templates/Header";
+import { axiosInstance } from "../../apis/api";
 
 // TODO: fix the problem change event is too slow
 const ControlledInput = ({ onUpdate }) => {
@@ -23,13 +23,13 @@ const SignUp: VFC<void> = () => {
   const router = useRouter();
   const email = useRef();
   const password = useRef();
-  const handleClickRegister = (e) => {
+  const handleClickRegister = async (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
     params.append("email", email.current);
     params.append("password", password.current);
 
-    axios
+    await axiosInstance
       .post("http://localhost:3000/register", params)
       .then((res) => {
         console.log("registration res", res.data);

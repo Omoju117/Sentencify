@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../apis/api";
 import { FC, SetStateAction, Dispatch, useCallback, useState } from "react";
 import { WordScheme } from "../components/atoms/Word";
 import { DocumentScheme } from "../pages/document/[documentId]";
@@ -31,7 +31,7 @@ export const useSentenceModal = (props: Props): UseModal => {
     // TODO:fix it to be able to select target_lang.
     params.append("targetLang", "JA");
 
-    await axios
+    await axiosInstance
       .post("http://localhost:3000/translation", params)
       .then((res) => {
         console.log("translation res at front", res);

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { VFC } from "react";
 import { useRouter } from "next/router";
 import DocumentBar, {
@@ -6,6 +5,7 @@ import DocumentBar, {
 } from "../../components/atoms/DocumentBar";
 import { useFetchDocuments } from "../../hooks/useFetchDocuments";
 import Header from "../../components/templates/Header";
+import { axiosInstance } from "../../apis/api";
 
 const Documents: VFC<void> = () => {
   const router = useRouter();
@@ -19,19 +19,28 @@ const Documents: VFC<void> = () => {
    * ドキュメント新規作成ボタンクリック時の処理
    * @param e イベント
    */
-  const handleClickCreate = (e) => {
+  const handleClickCreate = async (e) => {
     e.preventDefault();
-    const params = new URLSearchParams();
-    params.append("userId", "1");
-
-    axios
-      .post("http://localhost:3000/document", params)
+    await axiosInstance
+      .post("http://localhost:3000/document")
       .then((res) => {
         console.log("res", res.data);
         const document = res.data;
         router.push({
           pathname: `/document/${document.id}`,
         });
+      })
+      .catch((err) => {
+        console.log("error in request", err);
+      });
+  };
+
+  const handleClickVerify = async (e) => {
+    e.preventDefault();
+    await axiosInstance
+      .post("http://localhost:3000/verifyToken")
+      .then((res) => {
+        console.log("verify result: ", res.data);
       })
       .catch((err) => {
         console.log("error in request", err);
@@ -56,6 +65,12 @@ const Documents: VFC<void> = () => {
             />
           );
         })}
+        <button
+          className="mt-40 bg-black text-white rounded p-3 w-[10%]"
+          onClick={handleClickVerify}
+        >
+          <span>Verify</span>
+        </button>
       </div>
     </div>
   );
