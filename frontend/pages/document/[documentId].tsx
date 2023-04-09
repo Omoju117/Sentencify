@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { VFC, useState, useEffect } from "react";
+import { VFC, useState, useEffect, useCallback } from "react";
 import { axiosInstance } from "../../apis/api";
 import { DocumentListItem } from "../../components/atoms/DocumentBar";
 import { WordScheme } from "../../components/atoms/Word";
@@ -7,6 +7,7 @@ import ControlSection from "../../components/organisms/Document/ControlSection";
 import NoteSection from "../../components/organisms/Document/NoteSection";
 import { useFetchDocuments } from "../../hooks/useFetchDocuments";
 import { useSentenceModal } from "../../hooks/useSentenceModal";
+import { useOtherPhraseModal } from "../../hooks/useOtherPhraseModal";
 
 type MarkScheme = {
   index: number;
@@ -50,14 +51,23 @@ const Document: VFC<void> = () => {
     }
   };
   // Sentence入力モーダル
-  const [SentenceModal, open, isOpenModal] = useSentenceModal({
-    functions: { setWordSchemes, setDocument },
-  });
+  const [SentenceModal, openSentenceModal, isOpenSentenceModal] =
+    useSentenceModal({
+      functions: { setWordSchemes, setDocument },
+    });
+
+  // 指定のフレーズを使った他の例文モーダル
+  const [
+    OtherPhraseModal,
+    setOtherPhrase,
+    openOtherPhraseModal,
+    isOpenOtherPhraseModal,
+  ] = useOtherPhraseModal();
 
   // IDで指定されたドキュメントを取得する
-  const fetchDocument = async (documentId: string) => {
+  const fetchDocument = useCallback(async (documentId: string) => {
     await axiosInstance
-      .get("http://localhost:3000/document", {
+      .get("/document", {
         params: {
           documentId,
         },
@@ -84,7 +94,7 @@ const Document: VFC<void> = () => {
       .catch((err) => {
         console.log("error in request", err);
       });
-  };
+  }, []);
   /** 初回表示時にデータ取得処理 */
   useEffect(() => {
     if (router.query.isExisting) {
@@ -109,7 +119,7 @@ const Document: VFC<void> = () => {
         marks: [],
       });
     }
-  }, [router.query]);
+  }, [router.query, fetchDocument]);
 
   // Documentのリストを取得する
   const { data, error } = useFetchDocuments();
@@ -140,7 +150,7 @@ const Document: VFC<void> = () => {
       });
 
     await axiosInstance
-      .put("http://localhost:3000/document", params)
+      .put("/document", params)
       .then((res) => {
         console.log("res", res.data);
       })
@@ -151,7 +161,8 @@ const Document: VFC<void> = () => {
 
   return (
     <div className="relative w-[100vw] h-[100vh]">
-      {isOpenModal ? <SentenceModal /> : ""}
+      {isOpenSentenceModal ? <SentenceModal /> : ""}
+      {isOpenOtherPhraseModal ? <OtherPhraseModal /> : ""}
       <div className="h-full w-full absolute z-10">
         <div className="flex h-full w-full">
           <div className="flex flex-col h-full w-[10%] bg-gray-500 text-gray-300 text-[16px] leading-6">
@@ -181,13 +192,26 @@ const Document: VFC<void> = () => {
             >
               next
             </button>
-            <button className="border-b border-gray-700 p-3" onClick={open}>
+            <button
+              className="border-b border-gray-700 p-3"
+              onClick={openSentenceModal}
+            >
               edit
+            </button>
+            <button
+              className="border-b border-gray-700 p-3"
+              onClick={openOtherPhraseModal}
+            >
+              OpenAI
             </button>
           </div>
           <ControlSection
-            states={{ documentScheme: document, wordSchemes }}
-            functions={{ setWordSchemes, handleClickSave }}
+            states={{
+              documentScheme: document,
+              wordSchemes,
+              isOpenOtherPhraseModal,
+            }}
+            functions={{ setWordSchemes, setOtherPhrase, handleClickSave }}
           />
           <NoteSection
             states={{ translation: document.translation }}

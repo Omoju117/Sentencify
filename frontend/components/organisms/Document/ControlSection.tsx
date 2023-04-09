@@ -4,14 +4,18 @@ import Word, { WordScheme } from "../../atoms/Word";
 import { MarkContext } from "../../../pages/_app";
 import { DocumentScheme } from "../../../pages/document/[documentId]";
 import Image from "next/image";
+import { WordOfOtherPhrase } from "../../../hooks/useOtherPhraseModal";
 
 type Props = {
   states: {
     documentScheme: DocumentScheme;
     wordSchemes: WordScheme[];
+    isOpenOtherPhraseModal: boolean;
   };
   functions: {
     setWordSchemes: Dispatch<SetStateAction<WordScheme[]>>;
+    setOtherPhrase: Dispatch<SetStateAction<WordOfOtherPhrase[]>>;
+    // eslint-disable-next-line no-unused-vars
     handleClickSave: (e: any) => void;
   };
 };
@@ -36,9 +40,9 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
         new Blob([buffer.buffer], { type: "audio/wav" })
       );
     };
-    // TODO: fix it to get from env
     const url =
-      "https://texttospeech.googleapis.com/v1/text:synthesize?key=" + "";
+      "https://texttospeech.googleapis.com/v1/text:synthesize?key=" +
+      process.env.NEXT_PUBLIC_TEXT_TO_SPEECH_API_KEY;
     const data = {
       input: {
         text: states.documentScheme.sentence,
@@ -88,7 +92,11 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
               word={wordStatus.word}
               mark={wordStatus.mark}
               isVisible={wordStatus.isVisible}
-              setWordSchemes={functions.setWordSchemes}
+              states={{ isOpenOtherPhraseModal: states.isOpenOtherPhraseModal }}
+              functions={{
+                setWordSchemes: functions.setWordSchemes,
+                setOtherPhrase: functions.setOtherPhrase,
+              }}
             />
           ))}
         </div>

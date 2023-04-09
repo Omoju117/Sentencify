@@ -10,13 +10,13 @@ type Props = {
   };
 };
 
-export type UseModal = [
+export type UseSentenceModal = [
   SentenceModal: FC,
   open: () => void,
   isOpenModal: boolean
 ];
 
-export const useSentenceModal = (props: Props): UseModal => {
+export const useSentenceModal = (props: Props): UseSentenceModal => {
   /** テキスト入力処理 */
   const handleBlurTextArea = async (event) => {
     const inputText: string = event.target.value;
@@ -32,7 +32,7 @@ export const useSentenceModal = (props: Props): UseModal => {
     params.append("targetLang", "JA");
 
     await axiosInstance
-      .post("http://localhost:3000/translation", params)
+      .post("/translation", params)
       .then((res) => {
         console.log("translation res at front", res);
         translation =
