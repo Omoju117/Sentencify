@@ -110,7 +110,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
           </button>
           {isVisible ? (
             <button
-              className="w-[10%] bg-gray-200 rounded"
+              className="w-[10%] bg-gray-300 rounded flex justify-center items-center"
               onClick={() => {
                 functions.setWordSchemes(() =>
                   states.wordSchemes.map((wordScheme) => ({
@@ -123,14 +123,14 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             >
               <Image
                 src="/img/close-eye.svg"
-                width={40}
-                height={40}
+                width={32}
+                height={32}
                 alt="close-eye"
               />
             </button>
           ) : (
             <button
-              className="w-[10%] bg-gray-200 rounded"
+              className="w-[10%] bg-gray-300 rounded flex justify-center items-center"
               onClick={() => {
                 functions.setWordSchemes(() =>
                   states.wordSchemes.map((wordScheme) => ({
@@ -143,20 +143,20 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
             >
               <Image
                 src="/img/open-eye.svg"
-                width={40}
-                height={40}
+                width={32}
+                height={32}
                 alt="open-eye"
               />
             </button>
           )}
           <button
-            className="w-[10%] bg-gray-200 rounded"
+            className="w-[10%] bg-gray-200 rounded flex justify-center items-center"
             onClick={handleClickPlaySound}
           >
             <Image
               src="/img/play-sound.svg"
-              width={40}
-              height={40}
+              width={36}
+              height={36}
               alt="play-sound"
             />
           </button>

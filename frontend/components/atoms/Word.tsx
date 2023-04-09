@@ -96,7 +96,7 @@ const Word: VFC<Props> = ({
             : onClickHandler
         }
       >
-        <span className="w-full text-[20px] leading-6">{word}</span>
+        <span className="w-full text-[16px] leading-5">{word}</span>
       </button>
     </div>
   );
