@@ -4,11 +4,17 @@ export interface IFetchDocuments {
   data: DocumentListItem[] | undefined;
   error: Error | undefined;
 }
+
 /** Documentのリストをfetchする処理 */
 export const useFetchDocuments = (): IFetchDocuments => {
-  const fetcher = (...args) =>
-    fetch(...args, { credentials: "include" }).then((res) => res.json());
-  const { data, error } = useSWR(`http://localhost:3000/documents`, fetcher);
+  const fetcher = (url) =>
+    fetch(url, { credentials: "include", mode: "cors" }).then((res) =>
+      res.json()
+    );
+  const { data, error } = useSWR(
+    process.env.NEXT_PUBLIC_API_URL + "/documents",
+    fetcher
+  );
 
   return { data, error };
 };

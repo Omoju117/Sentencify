@@ -22,25 +22,13 @@ const Documents: VFC<void> = () => {
   const handleClickCreate = async (e) => {
     e.preventDefault();
     await axiosInstance
-      .post("http://localhost:3000/document")
+      .post("/document")
       .then((res) => {
         console.log("res", res.data);
         const document = res.data;
         router.push({
           pathname: `/document/${document.id}`,
         });
-      })
-      .catch((err) => {
-        console.log("error in request", err);
-      });
-  };
-
-  const handleClickVerify = async (e) => {
-    e.preventDefault();
-    await axiosInstance
-      .post("http://localhost:3000/verifyToken")
-      .then((res) => {
-        console.log("verify result: ", res.data);
       })
       .catch((err) => {
         console.log("error in request", err);
@@ -65,12 +53,6 @@ const Documents: VFC<void> = () => {
             />
           );
         })}
-        <button
-          className="mt-40 bg-black text-white rounded p-3 w-[10%]"
-          onClick={handleClickVerify}
-        >
-          <span>Verify</span>
-        </button>
       </div>
     </div>
   );

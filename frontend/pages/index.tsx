@@ -1,12 +1,15 @@
 import { VFC } from "react";
 import useSWR from "swr";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 // : [RequestInfo | URL, RequestInit]
 
 const Home: VFC<void> = () => {
-  const { data, error } = useSWR("http://localhost:3000/", fetcher);
+  const { data, error } = useSWR(
+    process.env.NEXT_PUBLIC_API_URL,
+    fetcher
+  );
   console.log("received data is", data);
   console.log("error", error);
 

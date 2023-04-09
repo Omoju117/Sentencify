@@ -30,7 +30,7 @@ const SignIn: VFC<void> = () => {
     params.append("password", password.current);
 
     await axiosInstance
-      .post("http://localhost:3000/login", params)
+      .post("/login", params)
       .then((res) => {
         console.log("login res: ", res.data);
         // TODO: manage JWT
