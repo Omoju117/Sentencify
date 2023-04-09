@@ -26,6 +26,7 @@ export type DocumentScheme = {
 
 const Document: VFC<void> = () => {
   const router = useRouter();
+  const [fetchAgain, setFetchAgain] = useState([""]);
   // TODO: start with here next.
   const [document, setDocument] = useState<DocumentScheme>({
     id: 0,
@@ -62,7 +63,7 @@ const Document: VFC<void> = () => {
     setOtherPhrase,
     openOtherPhraseModal,
     isOpenOtherPhraseModal,
-  ] = useOtherPhraseModal();
+  ] = useOtherPhraseModal({ functions: { setFetchAgain } });
 
   // IDで指定されたドキュメントを取得する
   const fetchDocument = useCallback(async (documentId: string) => {
@@ -119,7 +120,7 @@ const Document: VFC<void> = () => {
         marks: [],
       });
     }
-  }, [router.query, fetchDocument]);
+  }, [router.query, fetchDocument, fetchAgain]);
 
   // Documentのリストを取得する
   const { data, error } = useFetchDocuments();
