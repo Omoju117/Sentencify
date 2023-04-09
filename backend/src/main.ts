@@ -7,10 +7,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
-    origin: 'http://localhost:4000',
+    origin: process.env.ALLOWED_ORIGIN,
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
   });
   app.use(cookieParser());
   dotenv.config();
-  await app.listen(3000);
+  const port = process.env.PORT || '8080';
+  await app.listen(port);
 }
 bootstrap();

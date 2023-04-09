@@ -15,6 +15,7 @@ export class DocumentsController {
 
   @Get('documents')
   async getDocuments(@Req() request: Request): Promise<Document[]> {
+    console.log('request.cookies: ', request.cookies);
     let result = null;
     const userEmail = await this.jwtService.getIdFromToken(
       request.cookies['token'],
