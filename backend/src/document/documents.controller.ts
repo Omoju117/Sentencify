@@ -45,7 +45,13 @@ export class DocumentsController {
       request.cookies['token'],
     );
     if (userEmail) {
-      result = await this.documentService.createDocument(userEmail);
+      // OpenAIで別の文を生成した文で新規作成する場合
+      // TODO: 翻訳処理実装
+      const newSentence = request.body.sentence ?? '';
+      result = await this.documentService.createDocument(
+        userEmail,
+        newSentence,
+      );
     }
     console.log('result', result);
     return result;

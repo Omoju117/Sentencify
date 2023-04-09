@@ -59,7 +59,11 @@ export class DocumentService {
     };
   }
 
-  async createDocument(userEmail: string): Promise<Document> {
+  async createDocument(
+    userEmail: string,
+    sentence = '',
+    translation = '',
+  ): Promise<Document> {
     const result = await this.executeQueryService.execute(async () => {
       const targetUser = await prisma.user.findUnique({
         where: {
@@ -70,8 +74,8 @@ export class DocumentService {
       const newDocument = await prisma.document.create({
         data: {
           userId: targetUser.id,
-          sentence: '',
-          translation: '',
+          sentence,
+          translation,
         },
       });
 
