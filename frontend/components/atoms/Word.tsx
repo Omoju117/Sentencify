@@ -8,6 +8,7 @@ import {
 } from "react";
 import { WordOfOtherPhrase } from "../../hooks/useOtherPhraseModal";
 import { MarkContext } from "../../pages/_app";
+import { getMarkColorStyle } from "../../utils/colorUtil";
 
 /** Type of Word */
 export type WordScheme = {
@@ -31,18 +32,6 @@ type Props = {
   };
 };
 
-const getBgStyle = (mark: string) => {
-  switch (mark) {
-    case "show":
-      return "bg-orange-300";
-    case "note":
-      return "bg-purple-300";
-    case "":
-    default:
-      return "bg-gray-100";
-  }
-};
-
 const Word: VFC<Props> = ({
   index,
   word,
@@ -57,7 +46,7 @@ const Word: VFC<Props> = ({
 
   /** 初回レンダリング時処理 */
   useEffect(() => {
-    setBgColor(getBgStyle(mark));
+    setBgColor(getMarkColorStyle(mark));
   }, [mark]);
 
   /** Wordクリック時処理 */
@@ -73,9 +62,9 @@ const Word: VFC<Props> = ({
       });
       return newArray;
     });
-    setBgColor(getBgStyle(currentPickedMark));
+    setBgColor(getMarkColorStyle(currentPickedMark));
     console.log("mark", currentPickedMark);
-    console.log("style", getBgStyle(currentPickedMark));
+    console.log("style", getMarkColorStyle(currentPickedMark));
   };
 
   const onClickWhenOpenOtherPhraseModal = (e) => {

@@ -18,7 +18,11 @@ export class UserController {
     // TODO: error handling
     const isExist = await this.userService.findUser(body);
     const token = await this.jwtService.generateToken(body.email);
-    response.cookie('token', token, { httpOnly: true });
+    response.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
     return isExist ? token : '';
   }
   @Post('register')

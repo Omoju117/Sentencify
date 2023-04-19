@@ -24,7 +24,7 @@ const ControlSection: VFC<Props> = ({ states, functions }) => {
   /** 現在選択されているマーク */
   const [mark, setMark] = useState("");
   /** Wordsの可視状態 */
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     console.log(states.wordSchemes);
   }, [states.wordSchemes]);

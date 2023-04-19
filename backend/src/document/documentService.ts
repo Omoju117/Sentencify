@@ -2,11 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Document } from 'schemas';
 import { ExecuteQueryService } from 'src/services/executeQuery.service';
+import { TranslationsService } from 'src/translations/translations.service';
 const prisma = new PrismaClient();
 
 @Injectable()
 export class DocumentService {
-  constructor(private readonly executeQueryService: ExecuteQueryService) {}
+  constructor(
+    private readonly executeQueryService: ExecuteQueryService,
+    private readonly translationsService: TranslationsService,
+  ) {}
 
   async getDocuments(userEmail: string): Promise<Document[]> {
     const result = await this.executeQueryService.execute(async () => {
@@ -64,6 +68,10 @@ export class DocumentService {
     sentence = '',
     translation = '',
   ): Promise<Document> {
+    if (sentence) {
+      // TODO: fix here
+      translation = await this.translationsService.translate(sentence, 'ja');
+    }
     const result = await this.executeQueryService.execute(async () => {
       const targetUser = await prisma.user.findUnique({
         where: {

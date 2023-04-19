@@ -4,7 +4,7 @@ import { axiosInstance } from "../apis/api";
 
 type Props = {
   functions: {
-    setFetchAgain: Dispatch<SetStateAction<string[]>>;
+    setFetchSignal: Dispatch<SetStateAction<string[]>>;
   };
 };
 export type UseOtherPhraseModal = [
@@ -62,13 +62,12 @@ export const useOtherPhraseModal = (props: Props): UseOtherPhraseModal => {
         const document = res.data;
         router.push({
           pathname: `/document/${document.id}`,
-          // TODO: implement this feature
           query: {
-            withNewSentence: true,
+            isVisible: true,
             isExisting: true,
           },
         });
-        props.functions.setFetchAgain((prev) => [...prev]);
+        props.functions.setFetchSignal((prev) => [...prev]);
         close();
       })
       .catch((err) => {
@@ -78,7 +77,7 @@ export const useOtherPhraseModal = (props: Props): UseOtherPhraseModal => {
 
   // そのほかのフレーズ操作セクション
   const otherPhraseSection = (
-    <>
+    <div className="flex flex-col items-center justify-center rounded bg-white p-4">
       <div className="flex justify-center text-[16px] leading-4 mt-10 mb-4 space-x-2 h-[72px]">
         {otherPhrase.map((word) => {
           return (
@@ -93,7 +92,7 @@ export const useOtherPhraseModal = (props: Props): UseOtherPhraseModal => {
       </div>
       <div className="w-full flex justify-center items-center">
         <button
-          className="rounded w-[35%] bg-[#ff4500] text-white p-3"
+          className="rounded w-[35%] bg-[#e22222] text-white p-3"
           onClick={getOtherPhrase}
         >
           <span className="text-[20px] leading-[16px]">Generate</span>
@@ -107,12 +106,17 @@ export const useOtherPhraseModal = (props: Props): UseOtherPhraseModal => {
           <span>c</span>
         </button>
       </div>
-    </>
+    </div>
   );
 
   // 生成されたフレーズセクション
   const generatedPhraseSection = (
     <div className="w-full flex flex-col h-[200px] items-center justify-center text-[20px] leading-[24px] mt-10 rounded bg-[#ffffff] p-3">
+      <div className="w-full justify-start">
+        <p className="text-orange-400 font-bold w-[25%] text-[14px] leading-[16px] mt-2 mb-4">
+          generated!
+        </p>
+      </div>
       <p className="text-center">{generatedPhrase}</p>
       <button
         className="bg-green-500 text-white p-3 rounded mt-6"

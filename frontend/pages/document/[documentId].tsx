@@ -26,7 +26,7 @@ export type DocumentScheme = {
 
 const Document: VFC<void> = () => {
   const router = useRouter();
-  const [fetchAgain, setFetchAgain] = useState([""]);
+  const [fetchSignal, setFetchSignal] = useState([""]);
   // TODO: start with here next.
   const [document, setDocument] = useState<DocumentScheme>({
     id: 0,
@@ -63,7 +63,7 @@ const Document: VFC<void> = () => {
     setOtherPhrase,
     openOtherPhraseModal,
     isOpenOtherPhraseModal,
-  ] = useOtherPhraseModal({ functions: { setFetchAgain } });
+  ] = useOtherPhraseModal({ functions: { setFetchSignal } });
 
   // IDで指定されたドキュメントを取得する
   const fetchDocument = useCallback(async (documentId: string) => {
@@ -83,7 +83,7 @@ const Document: VFC<void> = () => {
             word,
             index,
             mark: "",
-            isVisible: false,
+            isVisible: router.query.isVisible ? true : false,
           }));
         document.marks.forEach((mark) => {
           const markedWord = words[mark.index];
@@ -119,8 +119,9 @@ const Document: VFC<void> = () => {
         updatedAt: "",
         marks: [],
       });
+      openSentenceModal();
     }
-  }, [router.query, fetchDocument, fetchAgain]);
+  }, [router.query, fetchDocument, fetchSignal]);
 
   // Documentのリストを取得する
   const { data, error } = useFetchDocuments();
@@ -166,7 +167,7 @@ const Document: VFC<void> = () => {
       {isOpenOtherPhraseModal ? <OtherPhraseModal /> : ""}
       <div className="h-full w-full absolute z-10">
         <div className="flex h-full w-full">
-          <div className="flex flex-col h-full w-[10%] bg-gray-500 text-gray-300 text-[16px] leading-6">
+          <div className="flex flex-col items-center h-full w-[10%] bg-gray-500 text-gray-300 text-[16px] leading-6">
             <span className="text-[20px] font-bold text-gray-800 p-3 border-b-4 border-gray-700">
               Sentencify
             </span>
