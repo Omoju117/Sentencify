@@ -138,4 +138,17 @@ export class DocumentService {
     });
     return result;
   }
+
+  async deleteDocument(documentId: string): Promise<boolean> {
+    const result = await this.executeQueryService.execute(async () => {
+      const deleted = await prisma.document.delete({
+        where: {
+          id: parseInt(documentId),
+        },
+      });
+
+      return deleted ? true : false;
+    });
+    return result;
+  }
 }

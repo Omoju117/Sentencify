@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Put, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { Document } from 'schemas';
 import { DocumentService } from 'src/document/documentService';
 import { JwtService } from 'src/services/jwt.service';
@@ -61,6 +70,15 @@ export class DocumentsController {
   async updateDocument(@Body() document: Document): Promise<boolean> {
     const result = await this.documentService.updateDocument(document);
     console.log('result', result);
+    return result;
+  }
+
+  @Delete('document')
+  async deleteDocument(
+    @Body('documentId') documentId: string,
+  ): Promise<boolean> {
+    const result = await this.documentService.deleteDocument(documentId);
+    console.log('deletion result: ', result);
     return result;
   }
 }

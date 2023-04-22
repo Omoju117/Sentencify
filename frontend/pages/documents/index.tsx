@@ -36,11 +36,11 @@ const Documents: VFC<void> = () => {
   };
 
   return (
-    <div className="flex flex-col w-[100vw] h-[100vh]">
+    <div className="flex flex-col w-[100vw] h-[100vh] items-center">
       <Header />
-      <div className="flex flex-col items-center justify-start py-16">
+      <div className="w-[80%] flex flex-col items-center justify-center py-16">
         <button
-          className="w-[50%] bg-green-500 text-white py-3 rounded"
+          className="w-[75%] bg-green-500 text-white py-3 rounded"
           onClick={handleClickCreate}
         >
           <span className="text-[16px] leading-5">Create New Document</span>
