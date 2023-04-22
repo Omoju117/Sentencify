@@ -53,7 +53,7 @@ export class JwtService {
 
   async getIdFromToken(token: string): Promise<string> {
     console.log('token:', token);
-    // TODO: fix it
+    // TODO: cross-domainでcookieを使える状態にできていないため、一時的に固定ユーザーを返す
     if (!token) {
       return 'testFlyUser@endo.com';
     }

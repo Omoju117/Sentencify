@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-server-import-in-page */
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // This function can be marked `async` if using `await` inside
@@ -7,7 +7,9 @@ export async function middleware(request: NextRequest) {
   // Authentication by JWT
   let token = request.cookies.get("token")?.value;
   if (!token) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    // TODO: cross-domainでcookieを使える状態にできていないため、一時的に無効化
+    console.log("no token");
+    // return NextResponse.redirect(new URL("/signin", request.url));
   }
 }
 

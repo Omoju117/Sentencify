@@ -18,7 +18,7 @@ export class DocumentsController {
     console.log('request.cookies: ', request.cookies);
     let result = null;
     const userEmail = await this.jwtService.getIdFromToken(
-      request.cookies['token'],
+      request.cookies['token'] ?? undefined,
     );
     if (userEmail) {
       result = await this.documentService.getDocuments(userEmail);
@@ -42,7 +42,7 @@ export class DocumentsController {
   async createDocument(@Req() request: Request): Promise<Document> {
     let result = null;
     const userEmail = await this.jwtService.getIdFromToken(
-      request.cookies['token'],
+      request.cookies['token'] ?? undefined,
     );
     if (userEmail) {
       // OpenAIで別の文を生成した文で新規作成する場合
