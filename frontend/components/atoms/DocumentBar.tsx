@@ -1,6 +1,7 @@
-import { VFC } from "react";
+import { Dispatch, SetStateAction, VFC } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "../../apis/api";
+import Image from "next/image";
 
 export type DocumentListItem = {
   id: number;
@@ -11,9 +12,12 @@ export type DocumentListItem = {
 
 type Props = {
   documentListItem: DocumentListItem;
+  functions: {
+    setDocumentList: Dispatch<SetStateAction<DocumentListItem[]>>;
+  };
 };
 
-const DocumentBar: VFC<Props> = ({ documentListItem }) => {
+const DocumentBar: VFC<Props> = ({ documentListItem, functions }) => {
   const router = useRouter();
   const handleClickOpenDocument = (e) => {
     e.preventDefault();
@@ -32,6 +36,14 @@ const DocumentBar: VFC<Props> = ({ documentListItem }) => {
     axiosInstance
       .delete("/document", { data: params })
       .then((res) => {
+        functions.setDocumentList((prev) => {
+          const shallowCopiedArr = [...prev];
+          const deleteIndex = prev.findIndex(
+            (document) => document.id === documentListItem.id
+          );
+          shallowCopiedArr.splice(deleteIndex, 1);
+          return shallowCopiedArr;
+        });
         console.log("delete success: ", res);
       })
       .catch((err) => {
@@ -49,10 +61,15 @@ const DocumentBar: VFC<Props> = ({ documentListItem }) => {
         {documentListItem.sentence}
       </button>
       <button
-        className="w-[40px] rounded bg-gray-100 py-3"
+        className="w-[40px] flex justify-center items-center rounded bg-gray-100 py-3 border-b border-r"
         onClick={handleClickDeleteDocument}
       >
-        D
+        <Image
+          src="/img/delete.svg"
+          width={24}
+          height={24}
+          alt="delete-button"
+        />
       </button>
     </div>
   );

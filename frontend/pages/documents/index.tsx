@@ -10,7 +10,7 @@ import { axiosInstance } from "../../apis/api";
 const Documents: VFC<void> = () => {
   const router = useRouter();
   /** ドキュメントリストの要素 */
-  const { data, error } = useFetchDocuments();
+  const { data, error, setDocumentList } = useFetchDocuments();
   const documentListItems: DocumentListItem[] = data;
   if (error) return <div>Failed to load</div>;
   if (!documentListItems) return <div>Loading...</div>;
@@ -50,6 +50,7 @@ const Documents: VFC<void> = () => {
             <DocumentBar
               key={documentListItem.id}
               documentListItem={documentListItem}
+              functions={{ setDocumentList }}
             />
           );
         })}
