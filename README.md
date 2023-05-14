@@ -17,12 +17,16 @@ https://sentencify-frontend.fly.dev/signin
 ## 英文一覧画面
 
 https://sentencify-frontend.fly.dev/documents
+
 この画面では以下のことが可能です
 
 1. 新規英文作成
 2. 作成済の英文を選択して編集画面に遷移
 3. 英文を削除
-   ![Documents](/frontend/public/img/indications/documents.png "Documents")
+
+---
+
+![Documents](/frontend/public/img/indications/documents.png "Documents")
 
 ## 英文編集画面
 
@@ -38,4 +42,7 @@ https://sentencify-frontend.fly.dev/documents
 8. OpenAI を利用して指定されたフレーズを使った英文を新しく生成する
 9. 英文の翻訳内容(通常は英文入力時に自動翻訳されます)
 10. 一時的なメモ 保存はされません
-    ![Document](/frontend/public/img/indications/document.png "Document")
+
+---
+
+![Document](/frontend/public/img/indications/document.png "Document")
